@@ -1,0 +1,40 @@
+---
+import GridItem from '../components/GridItem.astro';
+import {type IGridItem} from '../common/grid-item';
+
+interface Props {
+	items?: IGridItem[];
+}
+
+const { items = [] } = Astro.props;
+---
+
+<div class="grid">
+	{items.map((data) =>
+		<GridItem class="grid-item"
+			href={data.link}
+			title={data.title}
+			body={data.body}/>)
+	}
+</div>
+
+<style>
+	.grid {
+		display: flex;
+		flex-wrap: wrap;
+		list-style: none;
+		padding-left: 0;
+	}
+</style>
+<style is:global>
+	.grid-item {
+		--outline-width: 1px;
+		/* Mobile first */
+		display: flex;
+		flex: 0 0 33.3333%;
+		height: 33.3333vw;
+  	outline: var(--outline-width) solid black;
+		outline-offset: calc(-1 * var(--outline-width));
+		width: 33.3333vw;
+	}
+</style>

@@ -1,0 +1,22 @@
+---
+interface Props {
+	class: string;
+	title: string;
+	body: string;
+	href: string;
+}
+
+const { class: className = '', href, title, body } = Astro.props;
+---
+
+<div class:list={["grid-item-container", className]}>
+
+</div>
+<style>
+	.grid-item-container {
+		background-color: white;
+	}
+	.grid-item-container:is(:hover, :focus-within) h2 {
+		color: rgb(var(--accent-light));
+	}
+</style>

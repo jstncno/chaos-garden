@@ -1,0 +1,124 @@
+---
+import Layout from '../layouts/Layout.astro';
+import GridLayout from '../layouts/GridLayout.astro';
+import {type IGridItem} from '../common/grid-item';
+
+const items: IGridItem[] = [
+	{
+		link: "https://docs.astro.build/",
+		title: "Documentation",
+		body: "Learn how Astro works and explore the official API docs.",
+	},
+	{
+		link: "https://astro.build/integrations/",
+		title: "Integrations",
+		body: "Supercharge your project with new frameworks and libraries.",
+	},
+	{
+		link: "https://astro.build/themes/",
+		title: "Themes",
+		body: "Explore a galaxy of community-built starter themes.",
+	},
+	{
+		link: "https://astro.build/chat/",
+		title: "Community",
+		body: "Come say hi to our amazing Discord community. ❤️",
+	},
+];
+---
+
+<Layout title="Chaos Garden">
+	<main>
+		<h1 class="title-header">Chaos Garden</h1>
+		<!-- <p class="instructions">
+			To get started, open the directory <code>src/pages</code> in your project.<br />
+			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
+		</p> -->
+		<GridLayout items={items}/>
+		<!-- <ul role="list" class="link-card-grid">
+			<Card
+				href="https://docs.astro.build/"
+				title="Documentation"
+				body="Learn how Astro works and explore the official API docs."
+			/>
+			<Card
+				href="https://astro.build/integrations/"
+				title="Integrations"
+				body="Supercharge your project with new frameworks and libraries."
+			/>
+			<Card
+				href="https://astro.build/themes/"
+				title="Themes"
+				body="Explore a galaxy of community-built starter themes."
+			/>
+			<Card
+				href="https://astro.build/chat/"
+				title="Community"
+				body="Come say hi to our amazing Discord community. ❤️"
+			/>
+		</ul> -->
+	</main>
+</Layout>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300&family=Libre+Baskerville&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+	html {
+		background-color: var(--background-color);
+	}
+
+	main {
+		/* margin: auto; */
+		/* padding: 1rem; */
+		/* Mobile first */
+		width: 100%;
+		/* width: 800px; */
+		/* max-width: calc(100% - 2rem); */
+		color: var(--font-color);
+		font-size: 20px;
+		line-height: 1.6;
+	}
+	.astro-a {
+		position: absolute;
+		top: -32px;
+		left: 50%;
+		transform: translatex(-50%);
+		width: 220px;
+		height: auto;
+		z-index: -1;
+	}
+	h1.title-header {
+		font-family: "Playfair Display", serif;
+		font-optical-sizing: auto;
+		/* font-size: 4rem; */
+		font-weight: 400;
+		line-height: 1;
+		/* margin-bottom: 1em; */
+		margin: 15vh 0;
+		text-align: center;
+	}
+	.instructions {
+		margin-bottom: 2rem;
+		border: 1px solid rgba(var(--accent-light), 25%);
+		background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
+		padding: 1.5rem;
+		border-radius: 8px;
+	}
+	.instructions code {
+		font-size: 0.8em;
+		font-weight: bold;
+		background: rgba(var(--accent-light), 12%);
+		color: rgb(var(--accent-light));
+		border-radius: 4px;
+		padding: 0.3em 0.4em;
+	}
+	.instructions strong {
+		color: rgb(var(--accent-light));
+	}
+	.link-card-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+		gap: 2rem;
+		padding: 0;
+	}
+</style>
