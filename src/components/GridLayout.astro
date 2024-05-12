@@ -12,9 +12,9 @@ const { items = [] } = Astro.props;
 <div class="grid">
 	{items.map((data) =>
 		<GridItem class="grid-item"
-			href={data.link}
 			title={data.title}
-			body={data.body}/>)
+			postId={data.postId}
+			thumbnail={data.thumbnail} />)
 	}
 </div>
 

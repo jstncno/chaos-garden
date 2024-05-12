@@ -1,5 +1,5 @@
 export interface GridItemData {
-  link: string;
+  postId: string;
   title: string;
-  body: string;
+  thumbnail: string;
 }

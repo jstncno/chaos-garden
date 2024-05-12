@@ -1,6 +1,6 @@
 ---
-import {ViewTransitions} from 'astro:transitions';
 import {type PostData} from '../common/post';
+import TitleHeader from '../components/TitleHeader.astro';
 import Layout from '../layouts/Layout.astro';
 
 interface RouteParams {
@@ -14,7 +14,6 @@ interface StaticPath {
 }
 export async function getStaticPaths(): Promise<StaticPath[]> {
   const posts: PostData[] = await Astro.glob('../posts/**/*.mdx');
-
   return posts
 		.filter(post => post.frontmatter.published!!)
 		.map(post => ({
@@ -28,6 +27,15 @@ const {Content, frontmatter} = Astro.props.post;
 
 <Layout title={frontmatter.title}>
 	<main>
-		<Content />
+		<Content components={{h1: TitleHeader }} />
 	</main>
 </Layout>
+
+<style>
+	main {
+    color: #dde4e1;
+		/* background-color: #f5f0e8;
+    border-radius: 7px;
+    padding-bottom: 4rem; */
+	}
+</style>

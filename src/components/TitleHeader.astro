@@ -1,0 +1,31 @@
+---
+interface Props {
+	class?: string;
+}
+
+const {class: className = ''} = Astro.props;
+---
+<h1 class={className}>
+  <slot/>
+</h1>
+
+<style>
+	h1 {
+    color: black;
+		font-family: "Playfair Display", serif;
+		font-optical-sizing: auto;
+		font-weight: 400;
+		line-height: 1;
+		text-align: center;
+	}
+  h1.title-header {
+		margin: 15vh 0;
+  }
+</style>
+
+
+<script>
+	import {navigate} from 'astro:transitions/client';
+  const header = document.querySelector('h1');
+  header?.addEventListener('click', () => navigate('/'));
+</script>

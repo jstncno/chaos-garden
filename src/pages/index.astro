@@ -2,6 +2,7 @@
 import {type PostData} from '../common/post';
 import {type GridItemData} from '../common/grid-item';
 import GridLayout from '../components/GridLayout.astro';
+import TitleHeader from '../components/TitleHeader.astro';
 import Layout from '../layouts/Layout.astro';
 
 const posts: PostData[] = await Astro.glob('../posts/**/*.mdx');
@@ -9,16 +10,16 @@ const posts: PostData[] = await Astro.glob('../posts/**/*.mdx');
 const items: GridItemData[] = posts
 	.filter(post => post.frontmatter.published!!)
 	.map(post => ({
-		link: post.frontmatter.id,
+		postId: post.frontmatter.id,
 		title: post.frontmatter.title,
-		body: post.frontmatter.title,
+		thumbnail: post.frontmatter.preview,
 	}));
 
 ---
 
 <Layout title="Chaos Garden">
 	<main>
-		<h1 class="title-header">Chaos Garden</h1>
+		<TitleHeader class="title-header">Chaos Garden</TitleHeader>
 		<GridLayout items={items}/>
 	</main>
 </Layout>
@@ -34,48 +35,5 @@ const items: GridItemData[] = posts
 		color: var(--font-color);
 		font-size: 20px;
 		line-height: 1.6;
-	}
-	.astro-a {
-		position: absolute;
-		top: -32px;
-		left: 50%;
-		transform: translatex(-50%);
-		width: 220px;
-		height: auto;
-		z-index: -1;
-	}
-	h1.title-header {
-		font-family: "Playfair Display", serif;
-		font-optical-sizing: auto;
-		/* font-size: 4rem; */
-		font-weight: 400;
-		line-height: 1;
-		/* margin-bottom: 1em; */
-		margin: 15vh 0;
-		text-align: center;
-	}
-	.instructions {
-		margin-bottom: 2rem;
-		border: 1px solid rgba(var(--accent-light), 25%);
-		background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
-		padding: 1.5rem;
-		border-radius: 8px;
-	}
-	.instructions code {
-		font-size: 0.8em;
-		font-weight: bold;
-		background: rgba(var(--accent-light), 12%);
-		color: rgb(var(--accent-light));
-		border-radius: 4px;
-		padding: 0.3em 0.4em;
-	}
-	.instructions strong {
-		color: rgb(var(--accent-light));
-	}
-	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-		gap: 2rem;
-		padding: 0;
 	}
 </style>
