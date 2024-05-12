@@ -1,9 +1,9 @@
 ---
 import GridItem from '../components/GridItem.astro';
-import {type IGridItem} from '../common/grid-item';
+import {type GridItemData} from '../common/grid-item';
 
 interface Props {
-	items?: IGridItem[];
+	items?: GridItemData[];
 }
 
 const { items = [] } = Astro.props;

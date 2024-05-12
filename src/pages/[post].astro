@@ -1,0 +1,33 @@
+---
+import {ViewTransitions} from 'astro:transitions';
+import {type PostData} from '../common/post';
+import Layout from '../layouts/Layout.astro';
+
+interface RouteParams {
+	post: string;
+}
+interface StaticPath {
+	params: RouteParams;
+	props: {
+		post: any;
+	};
+}
+export async function getStaticPaths(): Promise<StaticPath[]> {
+  const posts: PostData[] = await Astro.glob('../posts/**/*.mdx');
+
+  return posts
+		.filter(post => post.frontmatter.published!!)
+		.map(post => ({
+			params: { post: post.frontmatter.id },
+			props: { post },
+		}));
+}
+
+const {Content, frontmatter} = Astro.props.post;
+---
+
+<Layout title={frontmatter.title}>
+	<main>
+		<Content />
+	</main>
+</Layout>

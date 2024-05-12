@@ -1,72 +1,29 @@
 ---
+import {type PostData} from '../common/post';
+import {type GridItemData} from '../common/grid-item';
+import GridLayout from '../components/GridLayout.astro';
 import Layout from '../layouts/Layout.astro';
-import GridLayout from '../layouts/GridLayout.astro';
-import {type IGridItem} from '../common/grid-item';
 
-const items: IGridItem[] = [
-	{
-		link: "https://docs.astro.build/",
-		title: "Documentation",
-		body: "Learn how Astro works and explore the official API docs.",
-	},
-	{
-		link: "https://astro.build/integrations/",
-		title: "Integrations",
-		body: "Supercharge your project with new frameworks and libraries.",
-	},
-	{
-		link: "https://astro.build/themes/",
-		title: "Themes",
-		body: "Explore a galaxy of community-built starter themes.",
-	},
-	{
-		link: "https://astro.build/chat/",
-		title: "Community",
-		body: "Come say hi to our amazing Discord community. ❤️",
-	},
-];
+const posts: PostData[] = await Astro.glob('../posts/**/*.mdx');
+
+const items: GridItemData[] = posts
+	.filter(post => post.frontmatter.published!!)
+	.map(post => ({
+		link: post.frontmatter.id,
+		title: post.frontmatter.title,
+		body: post.frontmatter.title,
+	}));
+
 ---
 
 <Layout title="Chaos Garden">
 	<main>
 		<h1 class="title-header">Chaos Garden</h1>
-		<!-- <p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-		</p> -->
 		<GridLayout items={items}/>
-		<!-- <ul role="list" class="link-card-grid">
-			<Card
-				href="https://docs.astro.build/"
-				title="Documentation"
-				body="Learn how Astro works and explore the official API docs."
-			/>
-			<Card
-				href="https://astro.build/integrations/"
-				title="Integrations"
-				body="Supercharge your project with new frameworks and libraries."
-			/>
-			<Card
-				href="https://astro.build/themes/"
-				title="Themes"
-				body="Explore a galaxy of community-built starter themes."
-			/>
-			<Card
-				href="https://astro.build/chat/"
-				title="Community"
-				body="Come say hi to our amazing Discord community. ❤️"
-			/>
-		</ul> -->
 	</main>
 </Layout>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300&family=Libre+Baskerville&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
-
-	html {
-		background-color: var(--background-color);
-	}
-
 	main {
 		/* margin: auto; */
 		/* padding: 1rem; */

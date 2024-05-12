@@ -9,9 +9,10 @@ interface Props {
 const { class: className = '', href, title, body } = Astro.props;
 ---
 
-<div class:list={["grid-item-container", className]}>
+<grid-item-container class:list={["grid-item-container", className]}>
+	<div></div>
+</grid-item-container>
 
-</div>
 <style>
 	.grid-item-container {
 		background-color: white;
@@ -19,4 +20,23 @@ const { class: className = '', href, title, body } = Astro.props;
 	.grid-item-container:is(:hover, :focus-within) h2 {
 		color: rgb(var(--accent-light));
 	}
+	.grid-item-container div {
+		height: 100%;
+		width: 100%;
+	}
 </style>
+
+<script>
+	import { navigate } from 'astro:transitions/client';
+  class GridItemContainer extends HTMLElement {
+    constructor() {
+      super();
+      const inner = this.querySelector('div');
+      inner?.addEventListener('click', () => {
+				navigate('test');
+      });
+    }
+  }
+
+  customElements.define('grid-item-container', GridItemContainer);
+</script>
