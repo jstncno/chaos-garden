@@ -4,12 +4,13 @@ id: crystal-creator
 preview: /thumbnails/crystal-creator.png
 published: true
 publishDate: '2022-01-04T07:10:40.413Z'
+link: https://jstncno.github.io/crystal-creator/
 ---
 import ArtCard from '../../components/ArtCard.astro';
 import BlogCard from '../../components/BlogCard.astro';
 
 <ArtCard>
-  <iframe src="https://jstncno.github.io/crystal-creator/"
+  <iframe src={frontmatter.link}
     width="100%"
     height="100%"
     frameBorder="0" />
