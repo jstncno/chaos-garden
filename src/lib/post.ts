@@ -5,6 +5,13 @@ export interface Frontmatter {
 	published?: boolean;
 	publishDate?: Date;
 	tags?: string[];
+	links?: Links;
+}
+
+export interface Links {
+	web?: string;
+	github?: string;
+	codesandbox?: string;
 }
 
 export interface PostData {

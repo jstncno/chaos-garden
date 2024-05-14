@@ -1,0 +1,23 @@
+---
+import {Icon} from 'astro-icon/components';
+
+interface Props {
+  name: string;
+  href: string;
+  size?: number;
+  target?: string;
+}
+
+const {name, href, size = 24, target = "_blank"} = Astro.props;
+---
+
+<a href={href} target={target}>
+  <Icon name={name} size={size} />
+</a>
+
+<style>
+  a {
+    color: black;
+    text-decoration: none;
+  }
+</style>
