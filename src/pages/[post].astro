@@ -2,8 +2,8 @@
 import {Icon} from 'astro-icon/components';
 
 import TitleHeader from '../components/TitleHeader.astro';
-import Layout from '../layouts/Layout.astro';
-import {type PostData} from '../lib/post';
+import Layout from '@chaosgarden/layouts/Layout.astro';
+import {type PostData} from '@chaosgarden/lib/post';
 
 interface RouteParams {
 	post: string;
@@ -38,9 +38,13 @@ const {Content, frontmatter} = Astro.props.post;
 <Layout title={frontmatter.title}>
 	<div class="navbar-container">
 		<div class="navbar">
-			<span id="back-btn" transition:persist><Icon name="mdi:chevron-left" size={32}></span>
+			<span id="back-btn" transition:persist>
+				<Icon name="mdi:chevron-left" size={32}>
+			</span>
 			<TitleHeader class="navbar-header">{frontmatter.title}</TitleHeader>
-			<span class="icon-spacer"><Icon name="mdi:dots-horizontal" size={32}></span>
+			<span class="icon-spacer">
+				<Icon name="mdi:dots-horizontal" size={32}>
+			</span>
 		</div>
 	</div>
 	<main>

@@ -1,3 +1,10 @@
 {
-  "extends": "astro/tsconfigs/strict"
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "paths": {
+      "@chaosgarden/components/*": ["./src/components/*"],
+      "@chaosgarden/layouts/*": ["./src/layouts/*"],
+      "@chaosgarden/lib/*": ["./src/lib/*"]
+    }
+  }
 }
