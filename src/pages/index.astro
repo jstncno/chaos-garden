@@ -6,7 +6,14 @@ import TitleHeader from '../components/TitleHeader.astro';
 import Layout from '../layouts/Layout.astro';
 
 const posts: PostData[] = await Astro.glob('../posts/**/*.mdx');
-
+posts.sort((a, b) => {
+	const now = new Date();
+	const aPublishDate = a.frontmatter.publishDate;
+	const bPublishDate = b.frontmatter.publishDate;
+	const aDate = (aPublishDate ? new Date(aPublishDate) : now);
+	const bDate = (bPublishDate ? new Date(bPublishDate) : now);
+	return bDate.getTime() - aDate.getTime();
+});
 const items: GridItemData[] = posts
 	.filter(post => post.frontmatter.published!!)
 	.map(post => ({
