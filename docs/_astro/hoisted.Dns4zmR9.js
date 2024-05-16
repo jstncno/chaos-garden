@@ -1,0 +1,1 @@
+import{n}from"./ViewTransitions.astro_astro_type_script_index_0_lang.ZN1KJq2I.js";class s extends HTMLElement{constructor(){super();const t=this.querySelector("img"),e=this.dataset.post;t&&e&&t.addEventListener("click",()=>n(e))}}customElements.define("grid-item-container",s);

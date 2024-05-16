@@ -1,0 +1,1 @@
+import{n}from"./ViewTransitions.astro_astro_type_script_index_0_lang.ZN1KJq2I.js";function t(){document.getElementById("back-btn")?.addEventListener("click",()=>n("/"))}document.addEventListener("astro:after-swap",()=>t());t();
