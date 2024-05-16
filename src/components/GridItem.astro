@@ -36,10 +36,15 @@ const {class: className = '', postId, thumbnail} = Astro.props;
       const inner = this.querySelector('img');
 			const postId = this.dataset.post;
 			if (inner && postId) {
-				inner.addEventListener('click', () => navigate(postId));
+				inner.addEventListener('click', () => open(postId));
 			}
     }
   }
+
+	function open(route: string) {
+		console.debug(route);
+		navigate(route);
+	}
 
   customElements.define('grid-item-container', GridItemContainer);
 </script>
