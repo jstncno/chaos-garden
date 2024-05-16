@@ -29,10 +29,16 @@ const {links} = Astro.props;
 	div.blog-card {
     /* Mobile first */
     background-color: var(--panel-color);
+    border-radius: 3px;
+    box-sizing: border-box;
     color: var(--font-color);
     margin: 1rem 0.5rem;
     padding: 0.5rem 1rem;
-    border-radius: 3px;
+
+    @media only screen and (min-width: 768px) {
+      margin: 1rem 0;
+      width: 100%;
+    }
 	}
 
   div.blog-card div.links-container {
@@ -40,4 +46,3 @@ const {links} = Astro.props;
     margin-bottom: -0.5rem;
   }
 </style>
-

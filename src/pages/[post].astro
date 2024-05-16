@@ -36,9 +36,11 @@ const {Content, frontmatter} = Astro.props.post;
 			<span class="icon-spacer"><Icon name="mdi:dots-horizontal" size={32}></span>
 		</div>
 	</div>
-	<main>
-		<Content components={{h1: TitleHeader }} />
-	</main>
+	<div class="main-container">
+		<main>
+			<Content components={{h1: TitleHeader }} />
+		</main>
+	</div>
 </Layout>
 
 <style>
@@ -60,6 +62,20 @@ const {Content, frontmatter} = Astro.props.post;
 
 	.navbar .icon-spacer {
 		visibility: hidden;
+	}
+
+	.main-container {
+		display: flex;
+	}
+
+	main {
+		margin: auto;
+
+		/* Medium devices (landscape tablets, 768px and up) */
+		@media only screen and (min-width: 768px) {
+			margin-top: 2rem;
+			width: 80vw;
+		}
 	}
 </style>
 

@@ -6,6 +6,12 @@
 	div.art-card {
     /* Mobile first */
 		height: 120vw;
-		width: 100vw;
+		width: 100%;
+
+		@media only screen and (min-width: 768px) {
+			border-radius: 3px;
+			height: 80vh;
+			overflow: hidden;
+		}
 	}
 </style>
