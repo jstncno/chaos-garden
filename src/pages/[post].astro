@@ -4,6 +4,7 @@ import {Icon} from 'astro-icon/components';
 import TitleHeader from '../components/TitleHeader.astro';
 import Layout from '../layouts/Layout.astro';
 import {type PostData} from '../lib/post';
+import {sortPosts} from '../lib/utils';
 
 interface RouteParams {
 	post: string;
@@ -14,18 +15,10 @@ interface StaticPath {
 		post: any;
 	};
 }
+
 export async function getStaticPaths(): Promise<StaticPath[]> {
-  const posts: PostData[] = await Astro.glob('../posts/**/*.mdx');
-	posts.sort((a, b) => {
-		const now = new Date();
-		const aPublishDate = a.frontmatter.publishDate;
-		const bPublishDate = b.frontmatter.publishDate;
-		const aDate = (aPublishDate ? new Date(aPublishDate) : now);
-		const bDate = (bPublishDate ? new Date(bPublishDate) : now);
-		return bDate.getTime() - aDate.getTime();
-	});
-  return posts
-		.filter(post => post.frontmatter.published!!)
+	const posts: PostData[] = await Astro.glob('../posts/**/*.mdx');
+  return sortPosts(posts)
 		.map(post => ({
 			params: { post: post.frontmatter.id },
 			props: { post },

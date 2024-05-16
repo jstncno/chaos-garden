@@ -29,12 +29,18 @@ const { items = [] } = Astro.props;
 <style is:global>
 	.grid-item {
 		--outline-width: 1px;
+		--flex-item-size: 33.3333;
 		/* Mobile first */
 		display: flex;
-		flex: 0 0 33.3333%;
-		height: 33.3333vw;
+		flex: 0 0 calc(var(--flex-item-size) * 1%);
+		height: calc(var(--flex-item-size) * 1%);
   	outline: var(--outline-width) solid black;
 		outline-offset: calc(-1 * var(--outline-width));
-		width: 33.3333vw;
+		width: calc(var(--flex-item-size) * 1%);
+
+		/* Medium devices (landscape tablets, 768px and up) */
+		@media only screen and (min-width: 768px) {
+			--flex-item-size: 25;
+		}
 	}
 </style>
