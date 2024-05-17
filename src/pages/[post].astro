@@ -29,14 +29,14 @@ const {Content, frontmatter} = Astro.props.post;
 ---
 
 <Layout title={frontmatter.title}>
-	<div class="navbar-container">
+	<div class="navbar-container" transition:animate="slide">
 		<div class="navbar">
 			<span id="back-btn" transition:persist><Icon name="mdi:chevron-left" size={32}></span>
 			<TitleHeader class="navbar-header">{frontmatter.title}</TitleHeader>
 			<span class="icon-spacer"><Icon name="mdi:dots-horizontal" size={32}></span>
 		</div>
 	</div>
-	<div class="main-container">
+	<div class="main-container" transition:animate="slide">
 		<main>
 			<Content components={{h1: TitleHeader }} />
 		</main>
@@ -84,7 +84,7 @@ const {Content, frontmatter} = Astro.props.post;
 
 	function setBackButtonListener() {
 		const btn = document.getElementById('back-btn');
-		btn?.addEventListener('click', () => navigate('/'));
+		btn?.addEventListener('click', () => navigate(import.meta.env.BASE_URL));
 	}
 
 	document.addEventListener('astro:after-swap', () => setBackButtonListener());

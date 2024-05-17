@@ -8,6 +8,5 @@ export default defineConfig({
   site: 'https://jstncno.github.io',
   base: 'chaos-garden',
   output: 'static',
-  outDir: './docs',
   build: { assets: 'astro' },
 });

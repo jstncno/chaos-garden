@@ -19,6 +19,7 @@ const {class: className = ''} = Astro.props;
 		text-align: center;
 	}
   h1.title-header {
+		cursor: pointer;
 		margin: 15vh 0;
   }
 
@@ -30,6 +31,6 @@ const {class: className = ''} = Astro.props;
 
 <script>
 	import {navigate} from 'astro:transitions/client';
-  const header = document.querySelector('h1');
-  header?.addEventListener('click', () => navigate('/'));
+  const header = document.querySelector('h1.title-header');
+  header?.addEventListener('click', () => navigate(import.meta.env.BASE_URL));
 </script>
