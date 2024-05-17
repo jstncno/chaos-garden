@@ -30,21 +30,16 @@ const {class: className = '', postId, thumbnail} = Astro.props;
 <script>
 	import {navigate} from 'astro:transitions/client';
 
-  class GridItemContainer extends HTMLElement {
-    constructor() {
-      super();
-      const inner = this.querySelector('img');
+	class GridItemContainer extends HTMLElement {
+		constructor() {
+			super();
 			const postId = this.dataset.post;
-			if (inner && postId) {
-				inner.addEventListener('click', () => open(postId));
+			console.debug(postId);
+			if (postId) {
+				this.addEventListener('click', () => navigate(postId));
 			}
-    }
-  }
-
-	function open(route: string) {
-		console.debug(route);
-		navigate(route);
+		}
 	}
 
-  customElements.define('grid-item-container', GridItemContainer);
+	customElements.define('grid-item-container', GridItemContainer);
 </script>
