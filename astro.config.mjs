@@ -9,4 +9,5 @@ export default defineConfig({
   base: 'chaos-garden',
   output: 'static',
   outDir: './docs',
+  build: { assets: 'astro' },
 });
