@@ -6,6 +6,7 @@ import mdx from '@astrojs/mdx';
 export default defineConfig({
   integrations: [icon(), mdx()],
   site: 'https://jstncno.github.io',
+  base: 'chaos-garden',
   output: 'static',
   outDir: './docs',
 });
