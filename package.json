@@ -6,7 +6,6 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
-    "gh-pages": "rm -rf docs && npm run build && mv dist docs",
     "preview": "astro preview",
     "astro": "astro"
   },
