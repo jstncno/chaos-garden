@@ -10,14 +10,16 @@ const {links} = Astro.props;
 ---
 
 <div class="blog-card">
-  {links &&
-    <div class="links-container">
-      {links.web && <IconLink href={links.web} name="mdi:web" />}
-      {links.github && <IconLink href={links.github} name="mdi:github" />}
-      {links.codesandbox && <IconLink href={links.codesandbox} name="code-sandbox-seeklogo" />}
-    </div>
-  }
-  <slot />
+  <div class="content-container">
+    {links &&
+      <div class="links-container">
+        {links.web && <IconLink href={links.web} name="mdi:web" />}
+        {links.github && <IconLink href={links.github} name="mdi:github" />}
+        {links.codesandbox && <IconLink href={links.codesandbox} name="code-sandbox-seeklogo" />}
+      </div>
+    }
+    <slot />
+  </div>
 </div>
 
 <style>
@@ -36,7 +38,7 @@ const {links} = Astro.props;
     padding: 0.5rem 1rem;
 
     @media only screen and (min-width: 768px) {
-      margin: 1rem 0;
+      margin: 1rem auto;
       width: 100%;
     }
 	}
@@ -44,5 +46,13 @@ const {links} = Astro.props;
   div.blog-card div.links-container {
     margin-top: 0.5rem;
     margin-bottom: -0.5rem;
+  }
+
+  div.blog-card div.content-container {
+    @media only screen and (min-width: 768px) {
+      margin: auto;
+      max-width: 80ch;
+      padding: 1rem;
+    }
   }
 </style>

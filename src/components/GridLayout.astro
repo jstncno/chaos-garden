@@ -29,18 +29,24 @@ const { items = [] } = Astro.props;
 <style is:global>
 	.grid-item {
 		--outline-width: 1px;
-		--flex-item-size: 33.3333;
 		/* Mobile first */
+		--flex-item-size: 33.3333;
+
+		/* Medium devices (landscape tablets, 768px and up) */
+		@media only screen and (min-width: 768px) {
+			--flex-item-size: 25;
+		}
+
+		/* Extra large devices (large laptops and desktops, 1200px and up) */
+		@media only screen and (min-width: 1200px) {
+			--flex-item-size: 20;
+		}
+
 		display: flex;
 		flex: 0 0 calc(var(--flex-item-size) * 1%);
 		height: calc(var(--flex-item-size) * 1%);
   	outline: var(--outline-width) solid black;
 		outline-offset: calc(-1 * var(--outline-width));
 		width: calc(var(--flex-item-size) * 1%);
-
-		/* Medium devices (landscape tablets, 768px and up) */
-		@media only screen and (min-width: 768px) {
-			--flex-item-size: 25;
-		}
 	}
 </style>
