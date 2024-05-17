@@ -1,0 +1,1 @@
+import{n as e}from"./ViewTransitions.astro_astro_type_script_index_0_lang.ZN1KJq2I.js";class s extends HTMLElement{constructor(){super();const t=this.dataset.post;console.debug(t),t&&this.addEventListener("click",()=>e(t))}}customElements.define("grid-item-container",s);
