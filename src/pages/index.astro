@@ -18,7 +18,12 @@ const items: GridItemData[] = sortPosts(posts)
 
 <Layout title="Chaos Garden">
 	<main>
-		<TitleHeader class="title-header">Chaos Garden</TitleHeader>
+		<TitleHeader class="title-header">
+			Chaos Garden
+			<div slot="subtitle">
+				A showcase of my generative and technical artwork
+			</div>
+		</TitleHeader>
 		<GridLayout items={items}/>
 	</main>
 </Layout>

@@ -5,26 +5,55 @@ interface Props {
 
 const {class: className = ''} = Astro.props;
 ---
-<h1 class={className}>
-  <slot/>
-</h1>
+<div class:list={["title-container", className]}>
+	<h1 class={className}>
+		<slot/>
+	</h1>
+	{Astro.slots.has('subtitle') &&
+		<div class="subtitle">
+			<slot name="subtitle" />
+		</div>
+	}
+</div>
 
 <style>
+	div.title-container.title-header {
+		margin: 15vh 0;
+
+		/* Extra large devices (large laptops and desktops, 1200px and up) */
+		@media only screen and (min-width: 1200px) {
+			margin: 10vh 0;
+		}
+	}
+	div.title-container.navbar-header {
+		margin: auto;
+	}
+
 	h1 {
     color: black;
 		font-family: "Playfair Display", serif;
 		font-optical-sizing: auto;
 		font-weight: 400;
+		margin: 0;
 		line-height: 1;
 		text-align: center;
 	}
   h1.title-header {
 		cursor: pointer;
-		margin: 15vh 0;
   }
 
-	h1.navbar-header {
-		margin: auto;
+	div.subtitle {
+		color: rgb(36 47 40);
+		font-weight: 400;
+		margin: 0.5rem auto;
+    max-width: 24ch;
+		text-align: center;
+
+		/* Small devices (portrait tablets and large phones, 600px and up) */
+		@media only screen and (min-width: 576px) {
+			margin: 1rem auto;
+			max-width: 90vw;
+		}
 	}
 </style>
 
