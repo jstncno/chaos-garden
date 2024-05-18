@@ -1,11 +1,22 @@
+---
+import {Icon} from 'astro-icon/components';
+---
+
 <div class="art-card">
   <slot />
+	<div class="exit-fullscreen button-container">
+		<Icon name="mdi:fullscreen-exit" size={24} />
+	</div>
+	<div class="fullscreen button-container">
+		<Icon name="mdi:fullscreen" size={24} />
+	</div>
 </div>
 
 <style>
 	div.art-card {
     /* Mobile first */
 		height: 120vw;
+		position: relative;
 		width: 100%;
 
 		@media only screen and (min-width: 768px) {
@@ -14,4 +25,56 @@
 			overflow: hidden;
 		}
 	}
+
+	div.art-card div.button-container {
+		background-color: var(--panel-color);
+		border-radius: 3px;
+		bottom: 0.5rem;
+		cursor: pointer;
+		display: flex;
+		right: 0.5rem;
+		position: absolute;
+	}
+	div.art-card div.button-container svg {
+		margin: auto;
+	}
 </style>
+
+<script>
+	function setFullScreenListeners() {
+		const card = document.querySelector('div.art-card');
+		card?.addEventListener('click', () => toggleFullScreen(card));
+	}
+
+	function isFullScreen(el: Element|null): boolean {
+		if (!el) return false;
+		return window.innerWidth === el.clientWidth &&
+			window.innerHeight === el.clientHeight;
+	}
+
+	function toggleFullScreen(el: Element|null) {
+		if (!el) return;
+		if (!isFullScreen(el)) {
+			el.requestFullscreen().catch(reason => console.error(reason));
+		} else {
+			document.exitFullscreen();
+		}
+	}
+
+	addEventListener('fullscreenchange', (event) => {
+		const card = document.querySelector('div.art-card');
+		if (!card) return;
+		const icon = card.querySelector('div.fullscreen.button-container') as HTMLElement;
+		if (!icon) return;
+		if (isFullScreen(card)) icon.style.visibility = 'hidden';
+		else icon.style.visibility = 'initial';
+
+		const iframe = card.querySelector('iframe');
+		if (!iframe) return;
+		setTimeout(() => iframe.src = iframe.src);
+	});
+
+	document.addEventListener('astro:after-swap', () => setFullScreenListeners());
+
+	setFullScreenListeners();
+</script>
