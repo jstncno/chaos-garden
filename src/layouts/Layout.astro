@@ -1,5 +1,7 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
+import {ViewTransitions} from 'astro:transitions';
+
+import Footer from '../components/Footer.astro';
 
 interface Props {
 	title: string;
@@ -22,6 +24,7 @@ const favicon = `${import.meta.env.BASE_URL}/favicon.svg`;
 	</head>
 	<body>
 		<slot />
+		<Footer />
 	</body>
 </html>
 
@@ -30,6 +33,8 @@ const favicon = `${import.meta.env.BASE_URL}/favicon.svg`;
 	:root {
 		--background-color: rgb(82, 107, 92);
 		--font-color: black;
+		--footer-height: 200px;
+		--subtitle-color: rgb(36 47 40);
 	}
 	html {
 		font-family: Lato, system-ui, sans-serif;
