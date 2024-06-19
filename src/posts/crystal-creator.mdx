@@ -18,7 +18,7 @@ import BlogCard from '/src/components/BlogCard.astro';
     frameBorder="0" />
 </ArtCard>
 
-<BlogCard links={frontmatter.links}>
+<BlogCard date={frontmatter.publishDate} links={frontmatter.links}>
   **CrystalCreator** is an interactive web application based off of Matthew
   Epler's YouTube series on
   [Designing Generative Systems with p5.js][gensystemsvid]

@@ -3,10 +3,16 @@ import IconLink from '../components/IconLink.astro';
 import {type Links} from '../lib/post';
 
 interface Props {
+  date: string;
   links?: Links;
 }
 
-const {links} = Astro.props;
+const {date, links} = Astro.props;
+
+function formatDate(dateStr: string) {
+  const date = new Date(dateStr);
+  return date.toLocaleString('default', { month: 'long', year: 'numeric' });
+}
 ---
 
 <div class="blog-card">
@@ -18,6 +24,9 @@ const {links} = Astro.props;
         {links.codesandbox && <IconLink href={links.codesandbox} name="code-sandbox-seeklogo" />}
       </div>
     }
+    <div class="date-container">
+      {formatDate(date)}
+    </div>
     <slot />
   </div>
 </div>
@@ -42,16 +51,21 @@ const {links} = Astro.props;
     }
 	}
 
-  div.blog-card div.links-container {
-    margin-top: 0.5rem;
-    margin-bottom: -0.5rem;
-  }
-
   div.blog-card div.content-container {
     @media only screen and (min-width: 768px) {
       margin: auto;
       max-width: 80ch;
       padding: 1rem;
     }
+  }
+
+  div.content-container div.date-container {
+    font-weight: 400;
+    margin-top: 0.25rem;
+    margin-bottom: -0.5rem;
+  }
+
+  div.content-container div.links-container {
+    margin-top: 0.5rem;
   }
 </style>

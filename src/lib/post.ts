@@ -3,7 +3,8 @@ export interface Frontmatter {
 	title: string;
 	preview: string;
 	published?: boolean;
-	publishDate?: Date;
+	// ISO formatted string
+	publishDate?: string;
 	tags?: string[];
 	links?: Links;
 }

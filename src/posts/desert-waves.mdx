@@ -19,7 +19,7 @@ import BlogCard from '/src/components/BlogCard.astro';
     frameBorder="0" />
 </ArtCard>
 
-<BlogCard links={frontmatter.links}>
+<BlogCard date={frontmatter.publishDate} links={frontmatter.links}>
   My take on recreating Joy Division's
   [Unknown Pleasures album cover][albumcover].
 

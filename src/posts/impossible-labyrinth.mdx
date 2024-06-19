@@ -3,7 +3,7 @@ title: Impossible Labyrinth
 id: impossible-labyrinth
 preview: thumbnails/impossible-labyrinth.png
 published: true
-publishDate: '2024-06-19T13:55:17.000Z'
+publishDate: '2024-06-19T20:55:17.000Z'
 links:
   web: https://pu7gt.csb.app/
   codesandbox: https://codesandbox.io/p/sandbox/impossible-labyrinth-pu7gt
@@ -20,8 +20,8 @@ import BlogCard from '/src/components/BlogCard.astro';
     frameBorder="0" />
 </ArtCard>
 
-<BlogCard links={frontmatter.links}>
-  A bit of ranomized tiled linework that resembles a top-level view of a maze.
+<BlogCard date={frontmatter.publishDate} links={frontmatter.links}>
+  A bit of ranomized tiled linework that resembles a bird's-eye view of a maze.
   I also added rotation in some of the "walls" to make the piece feel a bit more
   dynamic.
 </BlogCard>
