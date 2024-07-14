@@ -1,0 +1,29 @@
+---
+title: Linear Bloom
+id: linear-bloom
+preview: thumbnails/linear-bloom.png
+published: true
+publishDate: '2024-07-14T17:33:34.872Z'
+links:
+  web: https://5ie2z.csb.app/
+  codesandbox: https://codesandbox.io/p/sandbox/linear-bloom-5ie2z
+tags:
+  - lines
+---
+import ArtCard from '/src/components/ArtCard.astro';
+import BlogCard from '/src/components/BlogCard.astro';
+
+<ArtCard>
+  <iframe src={frontmatter.links.web}
+    width="100%"
+    height="100%"
+    frameBorder="0" />
+</ArtCard>
+
+<BlogCard date={frontmatter.publishDate} links={frontmatter.links}>
+  A simple pattern generated through the use of a single, infinitely rotating
+  color-changing line.
+
+  As one of my favorite pieces I've been able to come up with, it demonstrates
+  how an elegant and aesthetic pattern can emerge from something quite simple.
+</BlogCard>
