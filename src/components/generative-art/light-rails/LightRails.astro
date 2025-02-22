@@ -1,0 +1,74 @@
+---
+
+---
+
+<div id="art-container"></div>
+
+<style>
+  #art-container {
+    height: 100%;
+    width: 100%;
+  }
+</style>
+
+<script>
+  import P5 from "p5";
+  import {
+    HSB_COLOR_MAX,
+    DEFAULT_TILE_SIZE as TILE_SIZE,
+  } from "@lib/generative-art/light-rails/constants";
+  import { Edge, LightRailTile } from "@lib/generative-art/light-rails/tile";
+
+  const sketch = (p5: P5) => {
+    const container = document.getElementById("art-container");
+    if (!container) return;
+
+    const { offsetWidth, offsetHeight } = container;
+    let numCols: number;
+    let numRows: number;
+    let tile: LightRailTile;
+
+    p5.setup = () => {
+      const width = Math.floor(offsetWidth / TILE_SIZE) * TILE_SIZE;
+      const height = Math.floor(offsetHeight / TILE_SIZE) * TILE_SIZE;
+
+      // Creating and positioning the canvas
+      const canvas = p5.createCanvas(offsetWidth, offsetHeight);
+      canvas.parent(container);
+      console.log(canvas.width, canvas.height);
+
+      numCols = Math.floor(width / TILE_SIZE);
+      numRows = Math.floor(height / TILE_SIZE);
+
+      // Configuring the canvas
+      p5.background("#283747");
+
+      p5.colorMode(p5.HSB, HSB_COLOR_MAX);
+
+      const path = [
+        { start: Edge.TOP, end: Edge.RIGHT },
+        { start: Edge.TOP, end: Edge.BOTTOM },
+        { start: Edge.TOP, end: Edge.LEFT },
+        { start: Edge.BOTTOM, end: Edge.RIGHT },
+        { start: Edge.BOTTOM, end: Edge.LEFT },
+        { start: Edge.LEFT, end: Edge.RIGHT },
+      ];
+      const center = { x: Math.floor(numCols / 2), y: Math.floor(numRows / 2) };
+      console.log(center);
+      tile = new LightRailTile(path, center.x, center.y);
+    };
+
+    p5.draw = () => {
+      if (!numCols || !numRows || !tile) return;
+
+      tile.draw(p5);
+    };
+  };
+
+  document.addEventListener("astro:page-load", () => new P5(sketch));
+
+  document.addEventListener("astro:before-swap", () => {
+    const container = document.getElementById("art-container");
+    container?.remove();
+  });
+</script>
