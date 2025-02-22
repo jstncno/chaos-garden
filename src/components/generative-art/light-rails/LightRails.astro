@@ -28,7 +28,7 @@
     let numCols: number;
     let numRows: number;
     let tile: LightRailTile;
-    let model: WaveFunctionCollapseGridGenerator;
+    let grid: Array<Array<LightRailTile>> = [];
 
     p5.setup = () => {
       const width = Math.floor(offsetWidth / TILE_SIZE) * TILE_SIZE;
@@ -47,7 +47,7 @@
 
       p5.colorMode(p5.HSB, HSB_COLOR_MAX);
 
-      model = new WaveFunctionCollapseGridGenerator(
+      const model = new WaveFunctionCollapseGridGenerator(
         numCols,
         numRows,
         TILE_SIZE,
@@ -55,26 +55,28 @@
       model.initialize();
       model.collapse(p5);
 
-      // const path = [
-      //   { start: Edge.TOP, end: Edge.RIGHT },
-      //   { start: Edge.TOP, end: Edge.BOTTOM },
-      //   { start: Edge.TOP, end: Edge.LEFT },
-      //   { start: Edge.BOTTOM, end: Edge.RIGHT },
-      //   { start: Edge.BOTTOM, end: Edge.LEFT },
-      //   { start: Edge.LEFT, end: Edge.RIGHT },
-      // ];
-      // const center = { x: Math.floor(numCols / 2), y: Math.floor(numRows / 2) };
-      // console.log(center);
-      // tile = new LightRailTile(path, center.x, center.y);
-    };
-
-    p5.draw = () => {
-      if (!numCols || !numRows || !model) return;
-
       for (let row = 0; row < model.rows; row++) {
+        grid.push([]);
         for (let col = 0; col < model.cols; col++) {
           const data = model.grid[row][col];
           const tile = LightRailTile.fromTile(data);
+          const color = [
+            p5.random(0, HSB_COLOR_MAX), // Hue
+            p5.random(0, HSB_COLOR_MAX), // Saturation
+            p5.random(HSB_COLOR_MAX / 2, HSB_COLOR_MAX), // Brightness
+          ];
+          tile.setColor(color);
+          grid[row].push(tile);
+        }
+      }
+    };
+
+    p5.draw = () => {
+      if (!numCols || !numRows || !grid.length) return;
+
+      for (let row = 0; row < numRows; row++) {
+        for (let col = 0; col < numCols; col++) {
+          const tile = grid[row][col];
           tile.draw(p5);
         }
       }
