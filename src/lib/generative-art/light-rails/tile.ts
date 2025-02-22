@@ -19,7 +19,8 @@ export enum Edge {
 }
 
 export enum TileType {
-  BLANK = 1,
+  UNKNOWN = 0,
+  BLANK,
   TOP_RIGHT,
   TOP_BOTTOM,
   TOP_LEFT,
@@ -123,6 +124,11 @@ export class LightRailTile implements Tile {
     return { x, y };
   }
 
+  static fromTile(tile: Tile, size: number = DEFAULT_TILE_SIZE): LightRailTile {
+    const { paths, row, col } = tile;
+    return new LightRailTile(paths, row, col, size);
+  }
+
   constructor(
     public readonly paths: Array<Path>,
     public readonly row: number = 0,
@@ -132,6 +138,7 @@ export class LightRailTile implements Tile {
 
   draw(p5: P5) {
     p5.strokeWeight(2);
+    p5.stroke("#3e4b59");
     p5.noFill();
     const half = this.size / 2;
     p5.rect(
@@ -143,7 +150,7 @@ export class LightRailTile implements Tile {
 
     p5.strokeWeight(4);
     p5.stroke('white');
-    p5.point(this.position.x, this.position.y);
+    // p5.point(this.position.x, this.position.y);
 
     for (const path of this.paths) {
       const { start, end } = path;
