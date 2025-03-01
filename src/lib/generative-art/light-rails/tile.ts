@@ -41,80 +41,85 @@ export interface Tile {
 }
 
 
-export class LightRailTile implements Tile {
-  get type(): TileType {
-    const tileTypes = new Set<TileType>();
-    for (const path of this.paths) {
-      if (
-        // TOP_POINT and BOTTOM_POINT
-        (path.start === Edge.TOP && path.end === Edge.BOTTOM) ||
-        (path.start === Edge.BOTTOM && path.end === Edge.TOP)
-      ) {
-        tileTypes.add(TileType.TOP_BOTTOM);
-      } else if (
-        // TOP_POINT and RIGHT_POINT
-        (path.start === Edge.TOP && path.end === Edge.RIGHT) ||
-        (path.start === Edge.RIGHT && path.end === Edge.TOP)
-      ) {
-        tileTypes.add(TileType.TOP_RIGHT);
-      } else if (
-        // TOP_POINT and LEFT_POINT
-        (path.start === Edge.TOP && path.end === Edge.LEFT) ||
-        (path.start === Edge.LEFT && path.end === Edge.TOP)
-      ) {
-        tileTypes.add(TileType.TOP_LEFT);
-      } else if (
-        // BOTTOM_POINT and RIGHT_POINT
-        (path.start === Edge.BOTTOM && path.end === Edge.RIGHT) ||
-        (path.start === Edge.RIGHT && path.end === Edge.BOTTOM)
-      ) {
-        tileTypes.add(TileType.BOTTOM_RIGHT);
-      } else if (
-        // BOTTOM_POINT and LEFT_POINT
-        (path.start === Edge.BOTTOM && path.end === Edge.LEFT) ||
-        (path.start === Edge.LEFT && path.end === Edge.BOTTOM)
-      ) {
-        tileTypes.add(TileType.BOTTOM_LEFT);
-      } else if (
-        // LEFT_POINT and RIGHT_POINT
-        (path.start === Edge.LEFT && path.end === Edge.RIGHT) ||
-        (path.start === Edge.RIGHT && path.end === Edge.LEFT)
-      ) {
-        tileTypes.add(TileType.LEFT_RIGHT);
-      }
-    }
-
-    const pathTypes: Array<TileType> = Array.from(tileTypes);
-
-    if (pathTypes.length === 0) return TileType.BLANK;
-
-    if (pathTypes.length === 1) return pathTypes[0]
-
-    const [first, second] = pathTypes;
+export function tileTypeFromPaths(paths: Array<Path>): TileType {
+  const tileTypes = new Set<TileType>();
+  for (const path of paths) {
     if (
       // TOP_POINT and BOTTOM_POINT
-      (first === TileType.TOP_BOTTOM || second === TileType.TOP_BOTTOM) &&
-      // LEFT_POINT and RIGHT_POINT
-      (first === TileType.LEFT_RIGHT || second === TileType.LEFT_RIGHT)
+      (path.start === Edge.TOP && path.end === Edge.BOTTOM) ||
+      (path.start === Edge.BOTTOM && path.end === Edge.TOP)
     ) {
-      return TileType.TOPBOTTOM_LEFTRIGHT;
+      tileTypes.add(TileType.TOP_BOTTOM);
     } else if (
       // TOP_POINT and RIGHT_POINT
-      (first === TileType.TOP_RIGHT || second === TileType.TOP_RIGHT) &&
-      // BOTTOM_POINT and LEFT_POINT
-      (first === TileType.BOTTOM_LEFT || second === TileType.BOTTOM_LEFT)
+      (path.start === Edge.TOP && path.end === Edge.RIGHT) ||
+      (path.start === Edge.RIGHT && path.end === Edge.TOP)
     ) {
-      return TileType.TOPRIGHT_BOTTOMLEFT;
+      tileTypes.add(TileType.TOP_RIGHT);
     } else if (
       // TOP_POINT and LEFT_POINT
-      (first === TileType.TOP_LEFT || second === TileType.TOP_LEFT) &&
-      // BOTTOM_POINT and RIGHT_POINT
-      (first === TileType.BOTTOM_RIGHT || second === TileType.BOTTOM_RIGHT)
+      (path.start === Edge.TOP && path.end === Edge.LEFT) ||
+      (path.start === Edge.LEFT && path.end === Edge.TOP)
     ) {
-      return TileType.TOPLEFT_BOTTOMRIGHT;
+      tileTypes.add(TileType.TOP_LEFT);
+    } else if (
+      // BOTTOM_POINT and RIGHT_POINT
+      (path.start === Edge.BOTTOM && path.end === Edge.RIGHT) ||
+      (path.start === Edge.RIGHT && path.end === Edge.BOTTOM)
+    ) {
+      tileTypes.add(TileType.BOTTOM_RIGHT);
+    } else if (
+      // BOTTOM_POINT and LEFT_POINT
+      (path.start === Edge.BOTTOM && path.end === Edge.LEFT) ||
+      (path.start === Edge.LEFT && path.end === Edge.BOTTOM)
+    ) {
+      tileTypes.add(TileType.BOTTOM_LEFT);
+    } else if (
+      // LEFT_POINT and RIGHT_POINT
+      (path.start === Edge.LEFT && path.end === Edge.RIGHT) ||
+      (path.start === Edge.RIGHT && path.end === Edge.LEFT)
+    ) {
+      tileTypes.add(TileType.LEFT_RIGHT);
     }
+  }
 
-    return TileType.BLANK;
+  const pathTypes: Array<TileType> = Array.from(tileTypes);
+
+  if (pathTypes.length === 0) return TileType.BLANK;
+
+  if (pathTypes.length === 1) return pathTypes[0]
+
+  const [first, second] = pathTypes;
+  if (
+    // TOP_POINT and BOTTOM_POINT
+    (first === TileType.TOP_BOTTOM || second === TileType.TOP_BOTTOM) &&
+    // LEFT_POINT and RIGHT_POINT
+    (first === TileType.LEFT_RIGHT || second === TileType.LEFT_RIGHT)
+  ) {
+    return TileType.TOPBOTTOM_LEFTRIGHT;
+  } else if (
+    // TOP_POINT and RIGHT_POINT
+    (first === TileType.TOP_RIGHT || second === TileType.TOP_RIGHT) &&
+    // BOTTOM_POINT and LEFT_POINT
+    (first === TileType.BOTTOM_LEFT || second === TileType.BOTTOM_LEFT)
+  ) {
+    return TileType.TOPRIGHT_BOTTOMLEFT;
+  } else if (
+    // TOP_POINT and LEFT_POINT
+    (first === TileType.TOP_LEFT || second === TileType.TOP_LEFT) &&
+    // BOTTOM_POINT and RIGHT_POINT
+    (first === TileType.BOTTOM_RIGHT || second === TileType.BOTTOM_RIGHT)
+  ) {
+    return TileType.TOPLEFT_BOTTOMRIGHT;
+  }
+
+  return TileType.BLANK;
+}
+
+
+export class LightRailTile implements Tile {
+  get type(): TileType {
+    return tileTypeFromPaths(this.paths);
   }
 
   get position(): Point {
@@ -130,7 +135,7 @@ export class LightRailTile implements Tile {
     color = DEFAULT_HSB_COLOR_SIZE
   ): LightRailTile {
     const { paths, row, col } = tile;
-    return new LightRailTile(paths, row, col, size);
+    return new LightRailTile(paths, row, col, size, color);
   }
 
   constructor(
