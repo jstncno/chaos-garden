@@ -1,5 +1,7 @@
 import type P5 from "p5";
+
 import { Edge, type Path, type Point, type Tile, type TileGrid, TileType } from "./tile";
+import { DEFAULT_HSB_COLOR } from "./constants";
 
 const MAX_ITERATIONS = 100;
 
@@ -34,11 +36,10 @@ export class LightPathGenerator {
 
   generate(p5: P5): LightPath | undefined {
     const path: Array<PathItemState> = [];
-    const lastCol = this.grid[0].length - 1;
     const edgeTiles = this.getEdgeTiles(this.grid);
 
     if (!edgeTiles.length) {
-      return new LightPath(p5, path);
+      return new LightPath(path);
     }
 
     // 1. Get starting point based on edge tile
@@ -67,7 +68,7 @@ export class LightPathGenerator {
       p5.noLoop();
     }
 
-    return new LightPath(p5, path);
+    return new LightPath(path);
   }
 
   private deepCopyGrid(grid: TileGrid): TileGrid {
@@ -493,7 +494,6 @@ export class LightPathGenerator {
       startY = y - half;
       endX = x;
       endY = y + half;
-      reverseScaleY = -1;
     } else if (start === Edge.TOP && end === Edge.LEFT) {
       // Top -> left
       startX = x - half;
@@ -510,6 +510,7 @@ export class LightPathGenerator {
       endX = x;
       endY = y - half;
       scaleY = -1;
+      reverseScaleY = -1;
     } else if (start === Edge.BOTTOM && end === Edge.RIGHT) {
       // Bottom -> right
       startX = x + half;
@@ -608,12 +609,90 @@ export class LightPathGenerator {
 }
 
 export class LightPath {
+  static STEP = 0.05;
+
   private currIdx: number = 0;
   private currPct: number = 0;
   private complete: boolean = false;
 
   constructor(
-    p5: P5,
-    public readonly path: Array<PathItemState>
+    public readonly path: Array<PathItemState>,
+    public speed = LightPath.STEP,
   ) { }
+
+  draw(p5: P5) {
+    const item = this.path[this.currIdx];
+    const prev = this.path[this.currIdx - 1];
+    if (!item) return;
+    const { tile } = item;
+
+    let startX = item.lineStart.x;
+    let startY = item.lineStart.y;
+    let endX = (item.lineEnd ?? {}).x;
+    let endY = (item.lineEnd ?? {}).y;
+    let startAngle = (item.angle ?? {}).start;
+    let endAngle = (item.angle ?? {}).end;
+    let scaleX = item.scale.x;
+    let scaleY = item.scale.y;
+
+    p5.stroke(DEFAULT_HSB_COLOR);
+    p5.strokeWeight(6);
+    p5.noFill();
+
+    // Fill in current tile
+    if (startAngle !== undefined && endAngle !== undefined) {
+      const dist = Math.abs(endAngle - startAngle);
+      const pct = dist * this.currPct;
+      const progress = startAngle + pct;
+      p5.push();
+      p5.translate(startX, startY);
+      p5.scale(scaleX, scaleY);
+      p5.arc(0, 0, tile.size, tile.size, startAngle, progress);
+      p5.pop();
+    } else if ((
+      startX !== undefined &&
+      startY !== undefined &&
+      endX !== undefined &&
+      endY !== undefined
+    )) {
+      const distX = Math.abs(startX - endX);
+      const distY = Math.abs(startY - endY);
+      const pctX = distX * this.currPct;
+      const pctY = distY * this.currPct;
+      const progressX = startX + pctX * scaleX;
+      const progressY = startY + pctY * scaleY;
+      p5.line(startX, startY, progressX, progressY);
+    }
+
+    // Fill out prev tile
+    if (prev && prev.reverseAngle !== undefined) {
+      const { lineStart, reverseScale, reverseAngle } = prev;
+      const dist = Math.abs(reverseAngle.start - reverseAngle.end);
+      const pct = dist * this.currPct;
+      const progress = reverseAngle.end - pct;
+      p5.push();
+      p5.translate(lineStart.x, lineStart.y);
+      p5.scale(reverseScale.x, reverseScale.y);
+      p5.arc(0, 0, tile.size, tile.size, reverseAngle.start, progress);
+      p5.pop();
+    } else if (prev && prev.lineEnd !== undefined) {
+      const { lineStart, lineEnd, reverseScale } = prev;
+      const distX = Math.abs(lineStart.x - lineEnd.x);
+      const distY = Math.abs(lineStart.y - lineEnd.y);
+      const pctX = distX * this.currPct;
+      const pctY = distY * this.currPct;
+      const progressX = lineStart.x - pctX * reverseScale.x;
+      const progressY = lineStart.y + pctY * reverseScale.y;
+      p5.line(lineEnd.x, lineEnd.y, progressX, progressY);
+    }
+
+    this.currPct += this.speed;
+    if (this.currPct > 1.0) {
+      this.currPct = 0;
+      this.currIdx++;
+    }
+    if (this.currIdx >= this.path.length) {
+      this.complete = true;
+    }
+  }
 }

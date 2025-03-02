@@ -19,7 +19,10 @@
   } from "@lib/generative-art/light-rails/constants";
   import { Edge, LightRailTile } from "@lib/generative-art/light-rails/tile";
   import { WaveFunctionCollapseGridGenerator } from "@lib/generative-art/light-rails/wave-function-collapse";
-  import { LightPathGenerator } from "@lib/generative-art/light-rails/light-path";
+  import {
+    LightPath,
+    LightPathGenerator,
+  } from "@lib/generative-art/light-rails/light-path";
 
   const sketch = (p5: P5) => {
     const container = document.getElementById("art-container");
@@ -30,6 +33,7 @@
     let numRows: number;
     let pathGen: LightPathGenerator;
     let grid: Array<Array<LightRailTile>> = [];
+    let lightPaths: Array<LightPath> = [];
 
     p5.setup = () => {
       const width = Math.floor(offsetWidth / TILE_SIZE) * TILE_SIZE;
@@ -41,9 +45,6 @@
 
       numCols = Math.floor(width / TILE_SIZE);
       numRows = Math.floor(height / TILE_SIZE);
-
-      // Configuring the canvas
-      p5.background("#283747");
 
       p5.colorMode(p5.HSB, HSB_COLOR_MAX);
 
@@ -73,12 +74,12 @@
       }
 
       pathGen = new LightPathGenerator(grid);
-
-      const p = pathGen.generate(p5);
-      console.log(p?.path);
     };
 
     p5.draw = () => {
+      p5.clear();
+      p5.background("#283747");
+
       if (!numCols || !numRows || !grid.length) return;
 
       for (let row = 0; row < numRows; row++) {
@@ -86,6 +87,18 @@
           const tile = grid[row][col];
           tile.draw(p5);
         }
+      }
+
+      if (pathGen && !lightPaths.length) {
+        const lightPath = pathGen.generate(p5);
+        if (lightPath) {
+          console.log(lightPath.path);
+          lightPaths.push(lightPath);
+        }
+      }
+
+      for (const lightPath of lightPaths) {
+        lightPath.draw(p5);
       }
     };
   };

@@ -1,5 +1,5 @@
 import P5 from 'p5';
-import { DEFAULT_TILE_SIZE, DEFAULT_HSB_COLOR_SIZE } from './constants';
+import { DEFAULT_TILE_SIZE, DEFAULT_HSB_COLOR } from './constants';
 
 export interface Point {
   x: number;
@@ -135,7 +135,7 @@ export class LightRailTile implements Tile {
   static fromTile(
     tile: Tile,
     size: number = DEFAULT_TILE_SIZE,
-    color = DEFAULT_HSB_COLOR_SIZE
+    color = DEFAULT_HSB_COLOR
   ): LightRailTile {
     const { paths, row, col } = tile;
     return new LightRailTile(paths, row, col, size, color);
@@ -146,7 +146,7 @@ export class LightRailTile implements Tile {
     public readonly row: number = 0,
     public readonly col: number = 0,
     public readonly size: number = DEFAULT_TILE_SIZE,
-    public color: Array<number> = DEFAULT_HSB_COLOR_SIZE
+    public color: Array<number> = DEFAULT_HSB_COLOR
   ) { }
 
 
