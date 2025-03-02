@@ -187,7 +187,7 @@ export class LightPathGenerator {
             // Right -> top
             path.start = Edge.RIGHT;
             path.end = Edge.TOP;
-            nextTile = this.grid[row - 1][col];
+            nextTile = (this.grid[row - 1] ?? [])[col];
           } else {
             console.warn(col, row, TileType[tile.type]);
           }
@@ -197,12 +197,12 @@ export class LightPathGenerator {
             // Top -> bottom
             path.start = Edge.TOP;
             path.end = Edge.BOTTOM;
-            nextTile = this.grid[row + 1][col];
+            nextTile = (this.grid[row + 1] ?? [])[col];
           } else if (row === bottom) {
             // Bottom -> top
             path.start = Edge.BOTTOM;
             path.end = Edge.TOP;
-            nextTile = this.grid[row - 1][col];
+            nextTile = (this.grid[row - 1] ?? [])[col];
           } else {
             console.warn(col, row, TileType[tile.type]);
           }
@@ -217,7 +217,7 @@ export class LightPathGenerator {
             // Left -> top
             path.start = Edge.LEFT;
             path.end = Edge.TOP;
-            nextTile = this.grid[row - 1][col];
+            nextTile = (this.grid[row - 1] ?? [])[col];
           } else {
             console.warn(col, row, TileType[tile.type]);
           }
@@ -232,7 +232,7 @@ export class LightPathGenerator {
             // Right -> Bottom
             path.start = Edge.RIGHT;
             path.end = Edge.BOTTOM;
-            nextTile = this.grid[row + 1][col];
+            nextTile = (this.grid[row + 1] ?? [])[col];
           } else {
             console.warn(col, row, TileType[tile.type]);
           }
@@ -247,7 +247,7 @@ export class LightPathGenerator {
             // Left -> Bottom
             path.start = Edge.LEFT;
             path.end = Edge.BOTTOM;
-            nextTile = this.grid[row + 1][col];
+            nextTile = (this.grid[row + 1] ?? [])[col];
           } else {
             console.warn(col, row, TileType[tile.type]);
           }
@@ -277,7 +277,7 @@ export class LightPathGenerator {
             // Right -> top
             path.start = Edge.RIGHT;
             path.end = Edge.TOP;
-            nextTile = this.grid[row - 1][col];
+            nextTile = (this.grid[row - 1] ?? [])[col];
           } else if (row === bottom) {
             // Bottom -> left
             path.start = Edge.BOTTOM;
@@ -287,7 +287,7 @@ export class LightPathGenerator {
             // Left -> bottom
             path.start = Edge.LEFT;
             path.end = Edge.BOTTOM;
-            nextTile = this.grid[row + 1][col];
+            nextTile = (this.grid[row + 1] ?? [])[col];
           } else {
             console.warn(col, row, TileType[tile.type]);
           }
@@ -297,12 +297,12 @@ export class LightPathGenerator {
             // Top -> bottom
             path.start = Edge.TOP;
             path.end = Edge.BOTTOM;
-            nextTile = this.grid[row + 1][col];
+            nextTile = (this.grid[row + 1] ?? [])[col];
           } else if (row === bottom) {
             // Bottom -> top
             path.start = Edge.BOTTOM;
             path.end = Edge.TOP;
-            nextTile = this.grid[row - 1][col];
+            nextTile = (this.grid[row - 1] ?? [])[col];
           } else if (col === left) {
             // Left -> right
             path.start = Edge.LEFT;
@@ -327,7 +327,7 @@ export class LightPathGenerator {
             // Left -> top
             path.start = Edge.LEFT;
             path.end = Edge.TOP;
-            nextTile = this.grid[row - 1][col];
+            nextTile = (this.grid[row - 1] ?? [])[col];
           } else if (row === bottom) {
             // Bottom -> right
             path.start = Edge.BOTTOM;
@@ -337,7 +337,7 @@ export class LightPathGenerator {
             // Right -> bottom
             path.start = Edge.RIGHT;
             path.end = Edge.BOTTOM;
-            nextTile = this.grid[row + 1][col];
+            nextTile = (this.grid[row + 1] ?? [])[col];
           } else {
             console.warn(col, row, TileType[tile.type]);
           }
@@ -368,7 +368,7 @@ export class LightPathGenerator {
         case TileType.TOPBOTTOM_LEFTRIGHT:
           // Top -> bottom
           path.end = Edge.BOTTOM;
-          nextTile = this.grid[row + 1][col];
+          nextTile = (this.grid[row + 1] ?? [])[col];
           break;
         case TileType.TOP_LEFT:
         case TileType.TOPLEFT_BOTTOMRIGHT:
@@ -387,13 +387,13 @@ export class LightPathGenerator {
         case TileType.TOPRIGHT_BOTTOMLEFT:
           // Right -> top
           path.end = Edge.TOP;
-          nextTile = this.grid[row - 1][col];
+          nextTile = (this.grid[row - 1] ?? [])[col];
           break;
         case TileType.BOTTOM_RIGHT:
         case TileType.TOPLEFT_BOTTOMRIGHT:
           // Right -> bottom
           path.end = Edge.BOTTOM;
-          nextTile = this.grid[row + 1][col];
+          nextTile = (this.grid[row + 1] ?? [])[col];
           break;
         case TileType.LEFT_RIGHT:
         case TileType.TOPBOTTOM_LEFTRIGHT:
@@ -412,7 +412,7 @@ export class LightPathGenerator {
         case TileType.TOPBOTTOM_LEFTRIGHT:
           // Bottom -> top
           path.end = Edge.TOP;
-          nextTile = this.grid[row - 1][col];
+          nextTile = (this.grid[row - 1] ?? [])[col];
           break;
         case TileType.BOTTOM_RIGHT:
         case TileType.TOPLEFT_BOTTOMRIGHT:
@@ -437,7 +437,7 @@ export class LightPathGenerator {
         case TileType.TOPLEFT_BOTTOMRIGHT:
           // Left -> top
           path.end = Edge.TOP;
-          nextTile = this.grid[row - 1][col];
+          nextTile = (this.grid[row - 1] ?? [])[col];
           break;
         case TileType.LEFT_RIGHT:
         case TileType.TOPBOTTOM_LEFTRIGHT:
@@ -449,7 +449,7 @@ export class LightPathGenerator {
         case TileType.TOPRIGHT_BOTTOMLEFT:
           // Left -> bottom
           path.end = Edge.BOTTOM;
-          nextTile = this.grid[row + 1][col];
+          nextTile = (this.grid[row + 1] ?? [])[col];
           break;
         default:
           break;

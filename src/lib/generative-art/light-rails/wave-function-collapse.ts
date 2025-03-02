@@ -247,14 +247,8 @@ export class WaveFunctionCollapseGridGenerator {
       }
     }
 
-
     const p = pathsFromEdges(p5, requiredEdges, optionalEdges);
-
     paths.push(...p);
-    if (!paths.length) {
-      console.warn("Unsolvable!");
-      return paths;
-    }
     return paths;
   }
 
