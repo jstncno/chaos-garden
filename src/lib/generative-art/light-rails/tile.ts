@@ -148,19 +148,21 @@ export class LightRailTile implements Tile {
   ) { }
 
 
-  draw(p5: P5) {
+  draw(p5: P5, drawBorder = false) {
     const half = this.size / 2;
     p5.stroke("#3e4b59");
     p5.noFill();
 
-    // Draw border
-    // p5.strokeWeight(1);
-    // p5.rect(
-    //   this.position.x - half,
-    //   this.position.y - half,
-    //   this.size,
-    //   this.size
-    // );
+    if (drawBorder) {
+      // Draw border
+      p5.strokeWeight(1);
+      p5.rect(
+        this.position.x - half,
+        this.position.y - half,
+        this.size,
+        this.size
+      );
+    }
 
     p5.strokeWeight(4);
 

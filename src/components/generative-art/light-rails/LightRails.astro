@@ -1,8 +1,14 @@
 ---
+interface Props {
+  showGrid?: string;
+}
 
+const { showGrid } = Astro.props;
 ---
 
-<div id="art-container"></div>
+<light-rails id="light-rails">
+  <div id="art-container" data-show-grid={showGrid}></div>
+</light-rails>
 
 <style>
   #art-container {
@@ -30,92 +36,107 @@
     LightPathGenerator,
   } from "@lib/generative-art/light-rails/light-path";
 
-  const sketch = (p5: P5) => {
-    const container = document.getElementById("art-container");
-    if (!container) return;
+  class LightRails extends HTMLElement {
+    private root: HTMLElement | null | undefined;
+    private showGrid = true;
 
-    const { offsetWidth, offsetHeight } = container;
-    let numCols: number;
-    let numRows: number;
-    let pathGen: LightPathGenerator;
-    let grid: Array<Array<LightRailTile>> = [];
-    let lightPaths: Array<LightPath> = [];
-    let frameCount = 0;
+    connectedCallback() {
+      this.root = document.getElementById("art-container");
+      if (!this.root) return;
+      this.showGrid = this.root.dataset.showGrid !== "false";
+      new P5(this.sketch.bind(this));
+    }
 
-    p5.setup = () => {
-      const width = Math.floor(offsetWidth / TILE_SIZE) * TILE_SIZE;
-      const height = Math.floor(offsetHeight / TILE_SIZE) * TILE_SIZE;
+    toggleGrid() {
+      this.showGrid = !this.showGrid;
+    }
 
-      // Creating and positioning the canvas
-      const canvas = p5.createCanvas(width, height);
-      canvas.parent(container);
-      canvas.style("margin: auto");
+    private sketch(p5: P5) {
+      if (!this.root) return;
+      const { offsetWidth, offsetHeight } = this.root;
+      let numCols: number;
+      let numRows: number;
+      let pathGen: LightPathGenerator;
+      let grid: Array<Array<LightRailTile>> = [];
+      let lightPaths: Array<LightPath> = [];
+      let frameCount = 0;
 
-      numCols = Math.floor(width / TILE_SIZE);
-      numRows = Math.floor(height / TILE_SIZE);
+      p5.setup = () => {
+        if (!this.root) return;
+        const width = Math.floor(offsetWidth / TILE_SIZE) * TILE_SIZE;
+        const height = Math.floor(offsetHeight / TILE_SIZE) * TILE_SIZE;
 
-      p5.colorMode(p5.HSB, HSB_COLOR_MAX);
+        // Creating and positioning the canvas
+        const canvas = p5.createCanvas(width, height);
+        canvas.parent(this.root);
+        canvas.style("margin: auto");
 
-      const model = new WaveFunctionCollapseGridGenerator(
-        numCols,
-        numRows,
-        TILE_SIZE,
-      );
-      model.initialize();
-      model.collapse(p5);
+        numCols = Math.floor(width / TILE_SIZE);
+        numRows = Math.floor(height / TILE_SIZE);
 
-      // Initialize grid
-      grid = [];
-      for (let row = 0; row < model.rows; row++) {
-        grid.push([]);
-        for (let col = 0; col < model.cols; col++) {
-          const data = model.grid[row][col];
-          const tile = LightRailTile.fromTile(data);
-          grid[row].push(tile);
+        p5.colorMode(p5.HSB, HSB_COLOR_MAX);
+
+        const model = new WaveFunctionCollapseGridGenerator(
+          numCols,
+          numRows,
+          TILE_SIZE,
+        );
+        model.initialize();
+        model.collapse(p5);
+
+        // Initialize grid
+        grid = [];
+        for (let row = 0; row < model.rows; row++) {
+          grid.push([]);
+          for (let col = 0; col < model.cols; col++) {
+            const data = model.grid[row][col];
+            const tile = LightRailTile.fromTile(data);
+            grid[row].push(tile);
+          }
         }
-      }
 
-      pathGen = new LightPathGenerator(grid);
-    };
+        pathGen = new LightPathGenerator(grid);
+      };
 
-    p5.draw = () => {
-      p5.clear();
-      p5.background("#283747");
+      p5.draw = () => {
+        p5.clear();
+        p5.background("#283747");
 
-      if (!numCols || !numRows || !grid.length || !pathGen) return;
+        if (!numCols || !numRows || !grid.length || !pathGen) return;
 
-      for (let row = 0; row < numRows; row++) {
-        for (let col = 0; col < numCols; col++) {
-          const tile = grid[row][col];
-          tile.draw(p5);
+        for (let row = 0; row < numRows; row++) {
+          for (let col = 0; col < numCols; col++) {
+            const tile = grid[row][col];
+            tile.draw(p5, this.showGrid);
+          }
         }
-      }
 
-      if (
-        lightPaths.length < MAX_LIGHT_PATHS &&
-        (!lightPaths.length || frameCount > FRAMES_BETWEEN_LIGHT_PATHS)
-      ) {
-        frameCount = 0;
-        const lightPath = pathGen.generate(p5);
-        if (lightPath) {
-          lightPaths.push(lightPath);
+        if (
+          lightPaths.length < MAX_LIGHT_PATHS &&
+          (!lightPaths.length || frameCount > FRAMES_BETWEEN_LIGHT_PATHS)
+        ) {
+          frameCount = 0;
+          const lightPath = pathGen.generate(p5);
+          if (lightPath) {
+            lightPaths.push(lightPath);
+          }
         }
-      }
 
-      for (const lightPath of lightPaths) {
-        lightPath.draw(p5);
-      }
+        for (const lightPath of lightPaths) {
+          lightPath.draw(p5);
+        }
 
-      lightPaths = lightPaths.filter((p) => !p.done);
+        lightPaths = lightPaths.filter((p) => !p.done);
 
-      frameCount++;
-    };
-  };
-
-  document.addEventListener("astro:page-load", () => new P5(sketch));
+        frameCount++;
+      };
+    }
+  }
 
   document.addEventListener("astro:before-swap", () => {
-    const container = document.getElementById("art-container");
+    const container = document.getElementById("light-rails");
     container?.remove();
   });
+
+  customElements.define("light-rails", LightRails);
 </script>

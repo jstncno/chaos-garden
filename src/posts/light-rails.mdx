@@ -12,10 +12,13 @@ tags:
 import ArtCard from '/src/components/ArtCard.astro';
 import BlogCard from '/src/components/BlogCard.astro';
 import LightRails from '/src/components/generative-art/light-rails/LightRails.astro';
+import Controls from '/src/components/generative-art/light-rails/Controls.astro';
 
 <ArtCard>
-  <LightRails />
+  <LightRails showGrid />
 </ArtCard>
+
+<Controls />
 
 <BlogCard date={frontmatter.publishDate} links={frontmatter.links}>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam placerat laoreet eros a scelerisque. Mauris libero elit, semper ut sollicitudin non, rhoncus vel sapien. Nulla non convallis leo. In id lacus in metus faucibus pulvinar at at mi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi ultrices, leo vitae pulvinar euismod, mauris libero venenatis purus, sit amet gravida lorem arcu non leo. Suspendisse pretium mi ut massa faucibus, quis sollicitudin elit sodales. Morbi tristique et urna ut vehicula. Ut rutrum finibus risus vel rhoncus. Pellentesque pellentesque ante eget varius posuere. Cras lobortis id est vitae tristique. Ut iaculis leo a felis dignissim, id finibus lectus cursus. Morbi accumsan diam ultrices nisi tincidunt, ac aliquet elit egestas.

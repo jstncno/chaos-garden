@@ -1,0 +1,22 @@
+---
+
+---
+
+<button> Toggle Grid </button>
+
+<script>
+  interface LightRails extends HTMLElement {
+    toggleGrid(): void;
+  }
+
+  // Find our component DOM on the page.
+  const buttons = document.querySelectorAll("button");
+
+  // Add event listeners to fire confetti when a button is clicked.
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const lightRails = document.getElementById("light-rails") as LightRails;
+      lightRails?.toggleGrid();
+    });
+  });
+</script>
