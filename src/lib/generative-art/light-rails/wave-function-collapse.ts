@@ -86,7 +86,7 @@ function pathsFromEdges(
 }
 
 export class WaveFunctionCollapseGridGenerator {
-  public readonly grid: Array<Array<Tile>> = [];
+  public readonly grid: TileGrid = [];
   constructor(
     public readonly cols: number,
     public readonly rows: number,
@@ -127,14 +127,42 @@ export class WaveFunctionCollapseGridGenerator {
     const bottomLeft = this.grid[this.grid.length - 1][0];
     this.collapseTile(p5, bottomLeft);
 
-    for (let row = 0; row < this.rows; row++) {
-      for (let col = 0; col < this.cols; col++) {
-        const tile = this.grid[row][col];
-        if (tile.type === TileType.UNKNOWN) {
-          this.collapseTile(p5, tile);
-        }
+    this.centerSpiralFlatten(this.grid).forEach(tile => {
+      if (tile.type === TileType.UNKNOWN) {
+        this.collapseTile(p5, tile);
       }
+    });
+  }
+
+  private centerSpiralFlatten(grid: TileGrid): Array<Tile> {
+    const rows = grid.length;
+    const cols = grid[0].length;
+    const result = [];
+    let row = Math.floor(rows / 2);
+    let col = Math.floor(cols / 2);
+    let steps = 0;
+    let stepSize = 1;
+    let direction = 0; // 0: right, 1: down, 2: left, 3: up
+
+    while (result.length < rows * cols) {
+      for (let i = 0; i < stepSize; i++) {
+        if (row >= 0 && row < rows && col >= 0 && col < cols) {
+          result.push(grid[row][col]);
+        }
+
+        if (direction === 0) col++;
+        else if (direction === 1) row++;
+        else if (direction === 2) col--;
+        else if (direction === 3) row--;
+
+      }
+      steps++;
+      if (steps % 2 === 0) {
+        stepSize++;
+      }
+      direction = (direction + 1) % 4;
     }
+    return result;
   }
 
   private collapseTile(p5: P5, tile: Tile): Tile {
