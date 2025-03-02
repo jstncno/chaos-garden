@@ -76,6 +76,7 @@ export class LightPathGenerator {
       const col: Array<Tile> = grid[row];
       copy.push(col.map((item) => ({
         ...item,
+        type: item.type,
         position: item.position,
       })))
     }
@@ -342,7 +343,7 @@ export class LightPathGenerator {
           }
           break;
         default:
-          console.warn(col, row, TileType[tile.type]);
+          console.warn(col, row, tile.type, TileType[tile.type]);
           break;
       }
 
@@ -367,7 +368,7 @@ export class LightPathGenerator {
         case TileType.TOPBOTTOM_LEFTRIGHT:
           // Top -> bottom
           path.end = Edge.BOTTOM;
-          nextTile = this.grid[row - 1][col];
+          nextTile = this.grid[row + 1][col];
           break;
         case TileType.TOP_LEFT:
         case TileType.TOPLEFT_BOTTOMRIGHT:
@@ -405,6 +406,7 @@ export class LightPathGenerator {
       }
     } else if (prevRow === row + 1 && prevCol === col) {
       // Bottom prev neighbor
+      path.start = Edge.BOTTOM;
       switch (tile.type) {
         case TileType.TOP_BOTTOM:
         case TileType.TOPBOTTOM_LEFTRIGHT:
@@ -429,6 +431,7 @@ export class LightPathGenerator {
       }
     } else if (prevCol === col - 1 && prevRow === row) {
       // Left prev neighbor
+      path.start = Edge.LEFT;
       switch (tile.type) {
         case TileType.TOP_LEFT:
         case TileType.TOPLEFT_BOTTOMRIGHT:
