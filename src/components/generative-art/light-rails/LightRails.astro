@@ -6,8 +6,12 @@
 
 <style>
   #art-container {
+    display: flex;
     height: 100%;
     width: 100%;
+  }
+  #art-container canvas {
+    margin: auto;
   }
 </style>
 
@@ -43,8 +47,9 @@
       const height = Math.floor(offsetHeight / TILE_SIZE) * TILE_SIZE;
 
       // Creating and positioning the canvas
-      const canvas = p5.createCanvas(offsetWidth, offsetHeight);
+      const canvas = p5.createCanvas(width, height);
       canvas.parent(container);
+      canvas.style("margin: auto");
 
       numCols = Math.floor(width / TILE_SIZE);
       numRows = Math.floor(height / TILE_SIZE);
