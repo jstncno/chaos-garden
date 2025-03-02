@@ -66,12 +66,6 @@
         for (let col = 0; col < model.cols; col++) {
           const data = model.grid[row][col];
           const tile = LightRailTile.fromTile(data);
-          const color = [
-            p5.random(0, HSB_COLOR_MAX), // Hue
-            p5.random(0, HSB_COLOR_MAX), // Saturation
-            p5.random(HSB_COLOR_MAX / 2, HSB_COLOR_MAX), // Brightness
-          ];
-          tile.setColor(color);
           grid[row].push(tile);
         }
       }

@@ -1,7 +1,7 @@
 import type P5 from "p5";
 
 import { Edge, type Path, type Point, type Tile, type TileGrid, TileType } from "./tile";
-import { DEFAULT_HSB_COLOR } from "./constants";
+import { DEFAULT_HSB_COLOR, HSB_COLOR_MAX } from "./constants";
 
 const MAX_ITERATIONS = 100;
 
@@ -37,9 +37,10 @@ export class LightPathGenerator {
   generate(p5: P5): LightPath | undefined {
     const path: Array<PathItemState> = [];
     const edgeTiles = this.getEdgeTiles(this.grid);
+    const speed = p5.random(LightPath.MIN_STEP, LightPath.MAX_STEP);
 
     if (!edgeTiles.length) {
-      return new LightPath(path);
+      return new LightPath(p5, path, speed);
     }
 
     // 1. Get starting point based on edge tile
@@ -68,7 +69,7 @@ export class LightPathGenerator {
       p5.noLoop();
     }
 
-    return new LightPath(path);
+    return new LightPath(p5, path, speed);
   }
 
   private deepCopyGrid(grid: TileGrid): TileGrid {
@@ -610,7 +611,12 @@ export class LightPathGenerator {
 
 export class LightPath {
   static STEP = 0.05;
+  static MIN_STEP = 0.2;
+  static MAX_STEP = 1.0;
 
+  private hueNoise: number;
+  private saturationNoise: number;
+  private brightnessNoise: number;
   private currIdx: number = 0;
   private currPct: number = 0;
   private complete: boolean = false;
@@ -620,15 +626,25 @@ export class LightPath {
   }
 
   constructor(
+    p5: P5,
     public readonly path: Array<PathItemState>,
     public speed = LightPath.STEP,
-  ) { }
+  ) {
+    this.hueNoise = p5.random(0, HSB_COLOR_MAX); // Hue
+    this.saturationNoise = p5.random(0, HSB_COLOR_MAX); // Saturation
+    this.brightnessNoise = p5.random(HSB_COLOR_MAX / 2, HSB_COLOR_MAX); // Brightness
+  }
 
   draw(p5: P5) {
     const item = this.path[this.currIdx];
     const prev = this.path[this.currIdx - 1];
 
-    p5.stroke(DEFAULT_HSB_COLOR);
+    const color = [
+      p5.map(p5.noise(this.hueNoise), 0, 1, 0, HSB_COLOR_MAX * 2) % HSB_COLOR_MAX, // Hue
+      p5.map(p5.noise(this.saturationNoise), 0, 1, 0, HSB_COLOR_MAX * 2) % HSB_COLOR_MAX, // Saturation
+      p5.map(p5.noise(this.brightnessNoise), 0, 1, 0, HSB_COLOR_MAX * 2), // Brightness
+    ];
+    p5.stroke(color);
     p5.strokeWeight(6);
     p5.noFill();
 
@@ -693,6 +709,10 @@ export class LightPath {
     }
 
     this.currPct += this.speed;
+    this.hueNoise += this.speed;
+    this.saturationNoise += this.speed;
+    this.brightnessNoise += this.speed;
+
     if (this.currPct > 1.0) {
       this.currPct = 0;
       this.currIdx++;

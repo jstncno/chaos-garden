@@ -135,10 +135,9 @@ export class LightRailTile implements Tile {
   static fromTile(
     tile: Tile,
     size: number = DEFAULT_TILE_SIZE,
-    color = DEFAULT_HSB_COLOR
   ): LightRailTile {
     const { paths, row, col } = tile;
-    return new LightRailTile(paths, row, col, size, color);
+    return new LightRailTile(paths, row, col, size);
   }
 
   constructor(
@@ -146,25 +145,24 @@ export class LightRailTile implements Tile {
     public readonly row: number = 0,
     public readonly col: number = 0,
     public readonly size: number = DEFAULT_TILE_SIZE,
-    public color: Array<number> = DEFAULT_HSB_COLOR
   ) { }
 
 
   draw(p5: P5) {
-    p5.strokeWeight(2);
+    const half = this.size / 2;
     p5.stroke("#3e4b59");
     p5.noFill();
-    const half = this.size / 2;
-    p5.rect(
-      this.position.x - half,
-      this.position.y - half,
-      this.size,
-      this.size
-    );
+
+    // Draw border
+    // p5.strokeWeight(1);
+    // p5.rect(
+    //   this.position.x - half,
+    //   this.position.y - half,
+    //   this.size,
+    //   this.size
+    // );
 
     p5.strokeWeight(4);
-    p5.stroke(this.color);
-    // p5.point(this.position.x, this.position.y);
 
     for (const path of this.paths) {
       const { start, end } = path;
@@ -230,9 +228,5 @@ export class LightRailTile implements Tile {
         p5.line(startX, startY, endX, endY);
       }
     }
-  }
-
-  setColor(color: Array<number>) {
-    this.color = color;
   }
 }
