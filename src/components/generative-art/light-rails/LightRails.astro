@@ -19,6 +19,7 @@
   } from "@lib/generative-art/light-rails/constants";
   import { Edge, LightRailTile } from "@lib/generative-art/light-rails/tile";
   import { WaveFunctionCollapseGridGenerator } from "@lib/generative-art/light-rails/wave-function-collapse";
+  import { LightPathGenerator } from "@lib/generative-art/light-rails/light-path";
 
   const sketch = (p5: P5) => {
     const container = document.getElementById("art-container");
@@ -27,7 +28,7 @@
     const { offsetWidth, offsetHeight } = container;
     let numCols: number;
     let numRows: number;
-    let tile: LightRailTile;
+    let pathGen: LightPathGenerator;
     let grid: Array<Array<LightRailTile>> = [];
 
     p5.setup = () => {
@@ -54,6 +55,8 @@
       model.initialize();
       model.collapse(p5);
 
+      // Initialize grid
+      grid = [];
       for (let row = 0; row < model.rows; row++) {
         grid.push([]);
         for (let col = 0; col < model.cols; col++) {
@@ -68,6 +71,12 @@
           grid[row].push(tile);
         }
       }
+
+      pathGen = new LightPathGenerator(grid);
+
+      const p = pathGen.generate(p5);
+      console.log(p);
+      console.log(p?.path);
     };
 
     p5.draw = () => {

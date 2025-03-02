@@ -38,8 +38,11 @@ export interface Tile {
   position: Point;
   row: number;
   col: number;
+  size: number;
 }
 
+export type Grid<T> = Array<Array<T>>;
+export type TileGrid = Grid<Tile>;
 
 export function tileTypeFromPaths(paths: Array<Path>): TileType {
   const tileTypes = new Set<TileType>();

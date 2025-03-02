@@ -1,5 +1,5 @@
 import type P5 from "p5";
-import { Edge, type Path, type Tile, TileType, tileTypeFromPaths } from "./tile";
+import { Edge, type Path, type Tile, type TileGrid, TileType, tileTypeFromPaths } from "./tile";
 import { DEFAULT_TILE_SIZE } from "./constants";
 
 const REQUIRES_TOP = [
@@ -50,7 +50,7 @@ function pathsFromEdges(
     return paths;
   }
 
-  if (requiredEdges.size == 2 /*&& optionalEdges.size < 2*/) {
+  if (requiredEdges.size == 2) {
     // One path
     const [first, second] = Array.from(requiredEdges);
     const start = p5.random([first, second]);
@@ -107,6 +107,7 @@ export class WaveFunctionCollapseGridGenerator {
           position: { x, y },
           row,
           col,
+          size: this.tileSize,
         };
         this.grid[row].push(tile);
       }
