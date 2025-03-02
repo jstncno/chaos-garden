@@ -243,7 +243,7 @@ export class LightPathGenerator {
             // Bottom -> left
             path.start = Edge.BOTTOM;
             path.end = Edge.LEFT;
-            nextTile = this.grid[row][col + 1];
+            nextTile = this.grid[row][col - 1];
           } else if (col === left) {
             // Left -> Bottom
             path.start = Edge.LEFT;
@@ -614,6 +614,10 @@ export class LightPath {
   private currIdx: number = 0;
   private currPct: number = 0;
   private complete: boolean = false;
+
+  get done(): boolean {
+    return this.complete;
+  }
 
   constructor(
     public readonly path: Array<PathItemState>,

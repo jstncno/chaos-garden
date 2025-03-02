@@ -16,8 +16,10 @@
   import {
     HSB_COLOR_MAX,
     DEFAULT_TILE_SIZE as TILE_SIZE,
+    FRAMES_BETWEEN_LIGHT_PATHS,
+    MAX_LIGHT_PATHS,
   } from "@lib/generative-art/light-rails/constants";
-  import { Edge, LightRailTile } from "@lib/generative-art/light-rails/tile";
+  import { LightRailTile } from "@lib/generative-art/light-rails/tile";
   import { WaveFunctionCollapseGridGenerator } from "@lib/generative-art/light-rails/wave-function-collapse";
   import {
     LightPath,
@@ -34,6 +36,7 @@
     let pathGen: LightPathGenerator;
     let grid: Array<Array<LightRailTile>> = [];
     let lightPaths: Array<LightPath> = [];
+    let frameCount = 0;
 
     p5.setup = () => {
       const width = Math.floor(offsetWidth / TILE_SIZE) * TILE_SIZE;
@@ -80,7 +83,7 @@
       p5.clear();
       p5.background("#283747");
 
-      if (!numCols || !numRows || !grid.length) return;
+      if (!numCols || !numRows || !grid.length || !pathGen) return;
 
       for (let row = 0; row < numRows; row++) {
         for (let col = 0; col < numCols; col++) {
@@ -89,10 +92,13 @@
         }
       }
 
-      if (pathGen && !lightPaths.length) {
+      if (
+        lightPaths.length < MAX_LIGHT_PATHS &&
+        (!lightPaths.length || frameCount > FRAMES_BETWEEN_LIGHT_PATHS)
+      ) {
+        frameCount = 0;
         const lightPath = pathGen.generate(p5);
         if (lightPath) {
-          console.log(lightPath.path);
           lightPaths.push(lightPath);
         }
       }
@@ -100,6 +106,10 @@
       for (const lightPath of lightPaths) {
         lightPath.draw(p5);
       }
+
+      lightPaths = lightPaths.filter((p) => !p.done);
+
+      frameCount++;
     };
   };
 
