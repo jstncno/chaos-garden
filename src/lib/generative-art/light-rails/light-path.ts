@@ -627,45 +627,47 @@ export class LightPath {
   draw(p5: P5) {
     const item = this.path[this.currIdx];
     const prev = this.path[this.currIdx - 1];
-    if (!item) return;
-    const { tile } = item;
-
-    let startX = item.lineStart.x;
-    let startY = item.lineStart.y;
-    let endX = (item.lineEnd ?? {}).x;
-    let endY = (item.lineEnd ?? {}).y;
-    let startAngle = (item.angle ?? {}).start;
-    let endAngle = (item.angle ?? {}).end;
-    let scaleX = item.scale.x;
-    let scaleY = item.scale.y;
 
     p5.stroke(DEFAULT_HSB_COLOR);
     p5.strokeWeight(6);
     p5.noFill();
 
-    // Fill in current tile
-    if (startAngle !== undefined && endAngle !== undefined) {
-      const dist = Math.abs(endAngle - startAngle);
-      const pct = dist * this.currPct;
-      const progress = startAngle + pct;
-      p5.push();
-      p5.translate(startX, startY);
-      p5.scale(scaleX, scaleY);
-      p5.arc(0, 0, tile.size, tile.size, startAngle, progress);
-      p5.pop();
-    } else if ((
-      startX !== undefined &&
-      startY !== undefined &&
-      endX !== undefined &&
-      endY !== undefined
-    )) {
-      const distX = Math.abs(startX - endX);
-      const distY = Math.abs(startY - endY);
-      const pctX = distX * this.currPct;
-      const pctY = distY * this.currPct;
-      const progressX = startX + pctX * scaleX;
-      const progressY = startY + pctY * scaleY;
-      p5.line(startX, startY, progressX, progressY);
+    if (item) {
+      const { tile } = item;
+
+      let startX = item.lineStart.x;
+      let startY = item.lineStart.y;
+      let endX = (item.lineEnd ?? {}).x;
+      let endY = (item.lineEnd ?? {}).y;
+      let startAngle = (item.angle ?? {}).start;
+      let endAngle = (item.angle ?? {}).end;
+      let scaleX = item.scale.x;
+      let scaleY = item.scale.y;
+
+      // Fill in current tile
+      if (startAngle !== undefined && endAngle !== undefined) {
+        const dist = Math.abs(endAngle - startAngle);
+        const pct = dist * this.currPct;
+        const progress = startAngle + pct;
+        p5.push();
+        p5.translate(startX, startY);
+        p5.scale(scaleX, scaleY);
+        p5.arc(0, 0, tile.size, tile.size, startAngle, progress);
+        p5.pop();
+      } else if ((
+        startX !== undefined &&
+        startY !== undefined &&
+        endX !== undefined &&
+        endY !== undefined
+      )) {
+        const distX = Math.abs(startX - endX);
+        const distY = Math.abs(startY - endY);
+        const pctX = distX * this.currPct;
+        const pctY = distY * this.currPct;
+        const progressX = startX + pctX * scaleX;
+        const progressY = startY + pctY * scaleY;
+        p5.line(startX, startY, progressX, progressY);
+      }
     }
 
     // Fill out prev tile
@@ -677,7 +679,7 @@ export class LightPath {
       p5.push();
       p5.translate(lineStart.x, lineStart.y);
       p5.scale(reverseScale.x, reverseScale.y);
-      p5.arc(0, 0, tile.size, tile.size, reverseAngle.start, progress);
+      p5.arc(0, 0, prev.tile.size, prev.tile.size, reverseAngle.start, progress);
       p5.pop();
     } else if (prev && prev.lineEnd !== undefined) {
       const { lineStart, lineEnd, reverseScale } = prev;
@@ -695,7 +697,7 @@ export class LightPath {
       this.currPct = 0;
       this.currIdx++;
     }
-    if (this.currIdx >= this.path.length) {
+    if (this.currIdx >= this.path.length && !prev) {
       this.complete = true;
     }
   }
