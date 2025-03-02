@@ -611,8 +611,8 @@ export class LightPathGenerator {
 
 export class LightPath {
   static STEP = 0.05;
-  static MIN_STEP = 0.2;
-  static MAX_STEP = 1.0;
+  static MIN_STEP = 0.5;
+  static MAX_STEP = 1.5;
 
   private hueNoise: number;
   private saturationNoise: number;

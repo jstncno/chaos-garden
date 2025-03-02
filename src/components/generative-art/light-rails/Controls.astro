@@ -2,21 +2,24 @@
 
 ---
 
-<button> Toggle Grid </button>
+<button data-toggle-grid> Toggle Grid </button>
+<button data-refresh> Refresh </button>
 
 <script>
   interface LightRails extends HTMLElement {
+    refresh(): void;
     toggleGrid(): void;
   }
 
-  // Find our component DOM on the page.
-  const buttons = document.querySelectorAll("button");
+  const toggleGridButton = document.querySelector("button[data-toggle-grid");
+  toggleGridButton?.addEventListener("click", () => {
+    const lightRails = document.getElementById("light-rails") as LightRails;
+    lightRails?.toggleGrid();
+  });
 
-  // Add event listeners to fire confetti when a button is clicked.
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const lightRails = document.getElementById("light-rails") as LightRails;
-      lightRails?.toggleGrid();
-    });
+  const refreshButton = document.querySelector("button[data-refresh");
+  refreshButton?.addEventListener("click", () => {
+    const lightRails = document.getElementById("light-rails") as LightRails;
+    lightRails?.refresh();
   });
 </script>

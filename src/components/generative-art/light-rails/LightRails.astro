@@ -37,18 +37,44 @@ const { showGrid } = Astro.props;
   } from "@lib/generative-art/light-rails/light-path";
 
   class LightRails extends HTMLElement {
+    private p5: P5 | undefined;
     private root: HTMLElement | null | undefined;
     private showGrid = true;
+    private grid: Array<Array<LightRailTile>> = [];
+    private lightPaths: Array<LightPath> = [];
+    private model: WaveFunctionCollapseGridGenerator | undefined;
+    private pathGen: LightPathGenerator | undefined;
 
     connectedCallback() {
       this.root = document.getElementById("art-container");
       if (!this.root) return;
       this.showGrid = this.root.dataset.showGrid !== "false";
-      new P5(this.sketch.bind(this));
+      this.p5 = new P5(this.sketch.bind(this));
     }
 
     toggleGrid() {
       this.showGrid = !this.showGrid;
+    }
+
+    refresh() {
+      const model = this.model;
+      if (!model || !this.p5) return;
+      model.initialize();
+      model.collapse(this.p5);
+
+      // Initialize grid
+      this.grid = [];
+      for (let row = 0; row < model.rows; row++) {
+        this.grid.push([]);
+        for (let col = 0; col < model.cols; col++) {
+          const data = model.grid[row][col];
+          const tile = LightRailTile.fromTile(data);
+          this.grid[row].push(tile);
+        }
+      }
+
+      this.lightPaths = [];
+      this.pathGen = new LightPathGenerator(this.grid);
     }
 
     private sketch(p5: P5) {
@@ -56,9 +82,6 @@ const { showGrid } = Astro.props;
       const { offsetWidth, offsetHeight } = this.root;
       let numCols: number;
       let numRows: number;
-      let pathGen: LightPathGenerator;
-      let grid: Array<Array<LightRailTile>> = [];
-      let lightPaths: Array<LightPath> = [];
       let frameCount = 0;
 
       p5.setup = () => {
@@ -76,57 +99,44 @@ const { showGrid } = Astro.props;
 
         p5.colorMode(p5.HSB, HSB_COLOR_MAX);
 
-        const model = new WaveFunctionCollapseGridGenerator(
+        this.model = new WaveFunctionCollapseGridGenerator(
           numCols,
           numRows,
           TILE_SIZE,
         );
-        model.initialize();
-        model.collapse(p5);
 
-        // Initialize grid
-        grid = [];
-        for (let row = 0; row < model.rows; row++) {
-          grid.push([]);
-          for (let col = 0; col < model.cols; col++) {
-            const data = model.grid[row][col];
-            const tile = LightRailTile.fromTile(data);
-            grid[row].push(tile);
-          }
-        }
-
-        pathGen = new LightPathGenerator(grid);
+        this.refresh();
       };
 
       p5.draw = () => {
         p5.clear();
         p5.background("#283747");
 
-        if (!numCols || !numRows || !grid.length || !pathGen) return;
+        if (!numCols || !numRows || !this.grid.length || !this.pathGen) return;
 
         for (let row = 0; row < numRows; row++) {
           for (let col = 0; col < numCols; col++) {
-            const tile = grid[row][col];
+            const tile = this.grid[row][col];
             tile.draw(p5, this.showGrid);
           }
         }
 
         if (
-          lightPaths.length < MAX_LIGHT_PATHS &&
-          (!lightPaths.length || frameCount > FRAMES_BETWEEN_LIGHT_PATHS)
+          this.lightPaths.length < MAX_LIGHT_PATHS &&
+          (!this.lightPaths.length || frameCount > FRAMES_BETWEEN_LIGHT_PATHS)
         ) {
           frameCount = 0;
-          const lightPath = pathGen.generate(p5);
+          const lightPath = this.pathGen.generate(p5);
           if (lightPath) {
-            lightPaths.push(lightPath);
+            this.lightPaths.push(lightPath);
           }
         }
 
-        for (const lightPath of lightPaths) {
+        for (const lightPath of this.lightPaths) {
           lightPath.draw(p5);
         }
 
-        lightPaths = lightPaths.filter((p) => !p.done);
+        this.lightPaths = this.lightPaths.filter((p) => !p.done);
 
         frameCount++;
       };
