@@ -99,28 +99,30 @@ import { MAX_SPEED_FACTOR } from "@lib/generative-art/light-rails/constants";
     setSpeed(speed: number): void;
   }
 
-  const toggleGridButton = document.querySelector("button[data-toggle-grid]");
-  toggleGridButton?.addEventListener("click", () => {
-    const lightRails = document.getElementById("light-rails") as LightRails;
-    lightRails?.toggleGrid();
-  });
+  document.addEventListener("astro:page-load", () => {
+    const toggleGridButton = document.querySelector("button[data-toggle-grid]");
+    toggleGridButton?.addEventListener("click", () => {
+      const lightRails = document.getElementById("light-rails") as LightRails;
+      lightRails?.toggleGrid();
+    });
 
-  const refreshButton = document.querySelector("button[data-regenerate]");
-  refreshButton?.addEventListener("click", () => {
-    const lightRails = document.getElementById("light-rails") as LightRails;
-    lightRails?.regenerate();
-  });
+    const refreshButton = document.querySelector("button[data-regenerate]");
+    refreshButton?.addEventListener("click", () => {
+      const lightRails = document.getElementById("light-rails") as LightRails;
+      lightRails?.regenerate();
+    });
 
-  const speedFactorInput = document.querySelector("input[data-speed-factor]");
-  speedFactorInput?.addEventListener("input", (event) => {
-    const target = event.target as HTMLInputElement;
-    const lightRails = document.getElementById("light-rails") as LightRails;
-    if (!target || !lightRails) return;
-    const speed = Number(target.value);
-    if (isNaN(speed)) return;
-    lightRails.setSpeed(speed);
-    const valueEl = document.getElementById("slider-value");
-    if (!valueEl) return;
-    valueEl.innerText = speed.toString();
+    const speedFactorInput = document.querySelector("input[data-speed-factor]");
+    speedFactorInput?.addEventListener("input", (event) => {
+      const target = event.target as HTMLInputElement;
+      const lightRails = document.getElementById("light-rails") as LightRails;
+      if (!target || !lightRails) return;
+      const speed = Number(target.value);
+      if (isNaN(speed)) return;
+      lightRails.setSpeed(speed);
+      const valueEl = document.getElementById("slider-value");
+      if (!valueEl) return;
+      valueEl.innerText = speed.toString();
+    });
   });
 </script>
