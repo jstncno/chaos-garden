@@ -214,7 +214,7 @@ export class LightPathGenerator {
             // Top -> left
             path.start = Edge.TOP;
             path.end = Edge.LEFT;
-            nextTile = this.grid[row][col + 1];
+            nextTile = this.grid[row][col - 1];
           } else if (col === left) {
             // Left -> top
             path.start = Edge.LEFT;
