@@ -1,25 +1,42 @@
 ---
-
+import { MAX_SPEED_FACTOR } from "@lib/generative-art/light-rails/constants";
 ---
 
 <button data-toggle-grid> Toggle Grid </button>
-<button data-refresh> Refresh </button>
+<button data-regenerate> Regenerate </button>
+<input
+  data-speed-factor
+  type="range"
+  min="0"
+  max={MAX_SPEED_FACTOR}
+  step="0.01"
+/>
 
 <script>
   interface LightRails extends HTMLElement {
-    refresh(): void;
+    regenerate(): void;
     toggleGrid(): void;
+    setSpeed(speed: number): void;
   }
 
-  const toggleGridButton = document.querySelector("button[data-toggle-grid");
+  const toggleGridButton = document.querySelector("button[data-toggle-grid]");
   toggleGridButton?.addEventListener("click", () => {
     const lightRails = document.getElementById("light-rails") as LightRails;
     lightRails?.toggleGrid();
   });
 
-  const refreshButton = document.querySelector("button[data-refresh");
+  const refreshButton = document.querySelector("button[data-regenerate]");
   refreshButton?.addEventListener("click", () => {
     const lightRails = document.getElementById("light-rails") as LightRails;
-    lightRails?.refresh();
+    lightRails?.regenerate();
+  });
+
+  const speedFactorInput = document.querySelector("input[data-speed-factor]");
+  speedFactorInput?.addEventListener("change", (event) => {
+    const target = event.target as HTMLInputElement;
+    const lightRails = document.getElementById("light-rails") as LightRails;
+    if (!target || !lightRails) return;
+    const speed = Number(target.value);
+    if (!isNaN(speed)) lightRails.setSpeed(speed);
   });
 </script>

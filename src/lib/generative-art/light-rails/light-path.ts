@@ -610,9 +610,8 @@ export class LightPathGenerator {
 }
 
 export class LightPath {
-  static STEP = 0.05;
   static MIN_STEP = 0.5;
-  static MAX_STEP = 1.5;
+  static MAX_STEP = 2.0;
 
   private hueNoise: number;
   private saturationNoise: number;
@@ -628,14 +627,14 @@ export class LightPath {
   constructor(
     p5: P5,
     public readonly path: Array<PathItemState>,
-    public speed = LightPath.STEP,
+    public speed = LightPath.MIN_STEP,
   ) {
     this.hueNoise = p5.random(0, HSB_COLOR_MAX); // Hue
     this.saturationNoise = p5.random(0, HSB_COLOR_MAX); // Saturation
     this.brightnessNoise = p5.random(HSB_COLOR_MAX / 2, HSB_COLOR_MAX); // Brightness
   }
 
-  draw(p5: P5) {
+  draw(p5: P5, speedFactor = 1) {
     const item = this.path[this.currIdx];
     const prev = this.path[this.currIdx - 1];
 
@@ -708,10 +707,10 @@ export class LightPath {
       p5.line(lineEnd.x, lineEnd.y, progressX, progressY);
     }
 
-    this.currPct += this.speed;
-    this.hueNoise += this.speed;
-    this.saturationNoise += this.speed;
-    this.brightnessNoise += this.speed;
+    this.currPct += (this.speed * speedFactor);
+    this.hueNoise += (this.speed * speedFactor);
+    this.saturationNoise += (this.speed * speedFactor);
+    this.brightnessNoise += (this.speed * speedFactor);
 
     if (this.currPct > 1.0) {
       this.currPct = 0;
