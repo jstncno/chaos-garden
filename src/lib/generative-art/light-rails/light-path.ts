@@ -1,7 +1,7 @@
 import type P5 from "p5";
 
 import { Edge, type Path, type Point, type Tile, type TileGrid, TileType } from "./tile";
-import { DEFAULT_HSB_COLOR, HSB_COLOR_MAX } from "./constants";
+import { HSB_COLOR_MAX } from "./constants";
 
 const MAX_ITERATIONS = 100;
 
