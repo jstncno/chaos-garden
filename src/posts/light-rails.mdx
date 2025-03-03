@@ -1,9 +1,9 @@
 ---
 title: Light Rails
 id: light-rails
-# preview: thumbnails/crystal-creator.png
+preview: thumbnails/light-rails.png
 published: true
-publishDate: '2025-02-18T00:00:00.000Z'
+publishDate: '2025-03-03T07:53:23.354Z'
 links:
   github: https://github.com/jstncno/chaos-garden/tree/main/src/lib/generative-art/light-rails
 tags:
@@ -21,5 +21,23 @@ import Controls from '/src/components/generative-art/light-rails/Controls.astro'
 <Controls />
 
 <BlogCard date={frontmatter.publishDate} links={frontmatter.links}>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam placerat laoreet eros a scelerisque. Mauris libero elit, semper ut sollicitudin non, rhoncus vel sapien. Nulla non convallis leo. In id lacus in metus faucibus pulvinar at at mi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi ultrices, leo vitae pulvinar euismod, mauris libero venenatis purus, sit amet gravida lorem arcu non leo. Suspendisse pretium mi ut massa faucibus, quis sollicitudin elit sodales. Morbi tristique et urna ut vehicula. Ut rutrum finibus risus vel rhoncus. Pellentesque pellentesque ante eget varius posuere. Cras lobortis id est vitae tristique. Ut iaculis leo a felis dignissim, id finibus lectus cursus. Morbi accumsan diam ultrices nisi tincidunt, ac aliquet elit egestas.
+I envisioned this "light rails" idea as a bunch of randomly generated rail lines
+in which beams of color changing light rapidly traverse over. Coincidentally,
+I have also been wanting to implement the
+[Wave Function Collapse](https://www.gridbugs.org/wave-function-collapse/)
+algorithm in a generative art piece. **Light Rails** is the result of me trying
+to put these two things together.
+
+I didn't particularly like implementing WVC - in this case, I think my adjacency
+rules were too constrained, and what I was wanting to create was quite specific,
+so I found myself coding up a bunch of different edge- and corner-cases (there
+are probably better ways to implement this so I wouldn't have to keep track of
+all these cases, but I'm not that clever).
+
+There are obviously also other techniques and approaches to implementing WVC,
+so I'll have to keep these things in mind the next time I go about it. One
+interesting thing I did, though, was to collapse the grid starting from the
+center, then spiraling out (instead of a typical `for`-loop iterating up-down
+and left-right). Using this technique, I found that it was less likely for
+generated paths to have a closed loop.
 </BlogCard>
