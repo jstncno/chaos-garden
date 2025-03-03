@@ -1,5 +1,5 @@
 import P5 from 'p5';
-import { DEFAULT_TILE_SIZE, DEFAULT_HSB_COLOR } from './constants';
+import { DEFAULT_TILE_SIZE } from './constants';
 
 export interface Point {
   x: number;
