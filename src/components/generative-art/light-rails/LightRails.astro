@@ -53,7 +53,11 @@ const { showGrid } = Astro.props;
       this.root = document.getElementById("art-container");
       if (!this.root) return;
       this.showGrid = this.root.dataset.showGrid !== "false";
+    }
+
+    start() {
       this.p5 = new P5(this.sketch.bind(this));
+      this.regenerate();
     }
 
     toggleGrid() {
@@ -169,9 +173,14 @@ const { showGrid } = Astro.props;
     }
   }
 
+  document.addEventListener("astro:page-load", () => {
+    const lightRails = document.getElementById("light-rails") as LightRails;
+    lightRails?.start();
+  });
+
   document.addEventListener("astro:before-swap", () => {
-    const container = document.getElementById("light-rails");
-    container?.remove();
+    const lightRails = document.getElementById("light-rails");
+    lightRails?.remove();
   });
 
   customElements.define("light-rails", LightRails);
