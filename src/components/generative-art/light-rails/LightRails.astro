@@ -42,6 +42,8 @@ const { showGrid } = Astro.props;
     private root: HTMLElement | null | undefined;
     private model: WaveFunctionCollapseGridGenerator | undefined;
     private pathGen: LightPathGenerator | undefined;
+    private numRows = 0;
+    private numCols = 0;
     private showGrid = true;
     private grid: Array<Array<LightRailTile>> = [];
     private lightPaths: Array<LightPath> = [];
@@ -86,8 +88,6 @@ const { showGrid } = Astro.props;
     private sketch(p5: P5) {
       if (!this.root) return;
       const { offsetWidth, offsetHeight } = this.root;
-      let numCols: number;
-      let numRows: number;
       let frameCount = 0;
 
       p5.setup = () => {
@@ -100,14 +100,14 @@ const { showGrid } = Astro.props;
         canvas.parent(this.root);
         canvas.style("margin: auto");
 
-        numCols = Math.floor(width / TILE_SIZE);
-        numRows = Math.floor(height / TILE_SIZE);
+        this.numCols = Math.floor(width / TILE_SIZE);
+        this.numRows = Math.floor(height / TILE_SIZE);
 
         p5.colorMode(p5.HSB, HSB_COLOR_MAX);
 
         this.model = new WaveFunctionCollapseGridGenerator(
-          numCols,
-          numRows,
+          this.numCols,
+          this.numRows,
           TILE_SIZE,
         );
 
@@ -118,10 +118,16 @@ const { showGrid } = Astro.props;
         p5.clear();
         p5.background("#283747");
 
-        if (!numCols || !numRows || !this.grid.length || !this.pathGen) return;
+        if (
+          !this.numCols ||
+          !this.numRows ||
+          !this.grid.length ||
+          !this.pathGen
+        )
+          return;
 
-        for (let row = 0; row < numRows; row++) {
-          for (let col = 0; col < numCols; col++) {
+        for (let row = 0; row < this.numRows; row++) {
+          for (let col = 0; col < this.numCols; col++) {
             const tile = this.grid[row][col];
             tile.draw(p5, this.showGrid);
           }
@@ -145,6 +151,20 @@ const { showGrid } = Astro.props;
         this.lightPaths = this.lightPaths.filter((p) => !p.done);
 
         frameCount++;
+      };
+
+      p5.windowResized = () => {
+        p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
+
+        this.numCols = Math.floor(p5.windowWidth / TILE_SIZE);
+        this.numRows = Math.floor(p5.windowHeight / TILE_SIZE);
+
+        this.model = new WaveFunctionCollapseGridGenerator(
+          this.numCols,
+          this.numRows,
+          TILE_SIZE,
+        );
+        this.regenerate();
       };
     }
   }
