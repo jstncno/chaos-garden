@@ -1,0 +1,126 @@
+---
+import { MAX_SPEED_FACTOR } from "@lib/generative-art/light-rails/constants";
+---
+
+<style>
+  :root {
+    --slider-thumb-color: #546373;
+    --slider-track-color: #d7dee5;
+    --slider-thumb-size: 1rem;
+  }
+
+  #light-rails-controls-container {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  button {
+    background-color: #283747;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-family: Lato, system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 0.5rem 1rem;
+    margin: auto 0.25rem;
+  }
+
+  button:active {
+    background-color: #1a2530;
+  }
+
+  .slider-container {
+    color: white;
+    background-color: #283747;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    margin: auto 0.25rem;
+  }
+
+  input[type="range"] {
+    appearance: none;
+    background-color: var(--slider-track-color);
+    border-radius: 8px;
+    cursor: pointer;
+    height: 0.5rem;
+  }
+
+  input[type="range"]::-moz-range-track {
+    height: 0.5rem;
+    background-color: var(--slider-track-color);
+    border-radius: 8px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: var(--slider-thumb-size);
+    height: var(--slider-thumb-size);
+    border-radius: 50%;
+    background: var(--slider-thumb-color);
+    cursor: pointer;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: var(--slider-thumb-size);
+    height: var(--slider-thumb-size);
+    border-radius: 50%;
+    background: var(--slider-thumb-color);
+    cursor: pointer;
+  }
+
+  #slider-value {
+    display: inline-block;
+    width: 3ch;
+  }
+</style>
+
+<div id="light-rails-controls-container">
+  <div class="slider-container">
+    <span>Speed</span>
+    <input
+      data-speed-factor
+      type="range"
+      min="0"
+      max={MAX_SPEED_FACTOR}
+      step="0.01"
+    />
+    <div id="slider-value">1.00</div>
+  </div>
+  <button data-toggle-grid> Toggle Grid </button>
+  <button data-regenerate> Regenerate </button>
+</div>
+
+<script>
+  interface LightRails extends HTMLElement {
+    regenerate(): void;
+    toggleGrid(): void;
+    setSpeed(speed: number): void;
+  }
+
+  const toggleGridButton = document.querySelector("button[data-toggle-grid]");
+  toggleGridButton?.addEventListener("click", () => {
+    const lightRails = document.getElementById("light-rails") as LightRails;
+    lightRails?.toggleGrid();
+  });
+
+  const refreshButton = document.querySelector("button[data-regenerate]");
+  refreshButton?.addEventListener("click", () => {
+    const lightRails = document.getElementById("light-rails") as LightRails;
+    lightRails?.regenerate();
+  });
+
+  const speedFactorInput = document.querySelector("input[data-speed-factor]");
+  speedFactorInput?.addEventListener("input", (event) => {
+    const target = event.target as HTMLInputElement;
+    const lightRails = document.getElementById("light-rails") as LightRails;
+    if (!target || !lightRails) return;
+    const speed = Number(target.value);
+    if (isNaN(speed)) return;
+    lightRails.setSpeed(speed);
+    const valueEl = document.getElementById("slider-value");
+    if (!valueEl) return;
+    valueEl.innerText = speed.toString();
+  });
+</script>
