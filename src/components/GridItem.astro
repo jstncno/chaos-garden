@@ -6,14 +6,13 @@ interface Props extends GridItemData {
 }
 
 const { class: className = "", postId, thumbnail } = Astro.props;
-const img = `${thumbnail}`;
 ---
 
 <grid-item-container
 	class:list={["grid-item-container", className]}
 	data-post={postId}
 >
-	<img src={img} />
+	<img src={thumbnail} />
 </grid-item-container>
 
 <style>
