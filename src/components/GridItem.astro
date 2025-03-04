@@ -1,17 +1,19 @@
 ---
-import {type GridItemData} from '../lib/grid-item';
+import { type GridItemData } from "../lib/grid-item";
 
 interface Props extends GridItemData {
 	class: string;
 }
 
-const {class: className = '', postId, thumbnail} = Astro.props;
-const img = `${import.meta.env.BASE_URL}/${thumbnail}`;
+const { class: className = "", postId, thumbnail } = Astro.props;
+const img = `${thumbnail}`;
 ---
 
-<grid-item-container class:list={["grid-item-container", className]}
-	data-post={postId}>
-	<img src={img}>
+<grid-item-container
+	class:list={["grid-item-container", className]}
+	data-post={postId}
+>
+	<img src={img} />
 </grid-item-container>
 
 <style>
@@ -29,7 +31,7 @@ const img = `${import.meta.env.BASE_URL}/${thumbnail}`;
 </style>
 
 <script>
-	import {navigate} from 'astro:transitions/client';
+	import { navigate } from "astro:transitions/client";
 
 	class GridItemContainer extends HTMLElement {
 		constructor() {
@@ -37,10 +39,10 @@ const img = `${import.meta.env.BASE_URL}/${thumbnail}`;
 			const postId = this.dataset.post;
 			if (postId) {
 				const route = `${import.meta.env.BASE_URL}/${postId}`;
-				this.addEventListener('click', () => navigate(route));
+				this.addEventListener("click", () => navigate(route));
 			}
 		}
 	}
 
-	customElements.define('grid-item-container', GridItemContainer);
+	customElements.define("grid-item-container", GridItemContainer);
 </script>
