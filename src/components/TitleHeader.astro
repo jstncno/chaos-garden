@@ -3,16 +3,19 @@ interface Props {
 	class?: string;
 }
 
-const {class: className = ''} = Astro.props;
+const { class: className = "" } = Astro.props;
 ---
+
 <div class:list={["title-container", className]}>
 	<h1 class={className}>
-		<slot/>
+		<slot />
 	</h1>
-	{Astro.slots.has('subtitle') &&
-		<div class="subtitle">
-			<slot name="subtitle" />
-		</div>
+	{
+		Astro.slots.has("subtitle") && (
+			<div class="subtitle">
+				<slot name="subtitle" />
+			</div>
+		)
 	}
 </div>
 
@@ -30,7 +33,7 @@ const {class: className = ''} = Astro.props;
 	}
 
 	h1 {
-    color: black;
+		color: black;
 		font-family: "Playfair Display", serif;
 		font-optical-sizing: auto;
 		font-weight: 400;
@@ -38,15 +41,15 @@ const {class: className = ''} = Astro.props;
 		line-height: 1;
 		text-align: center;
 	}
-  h1.title-header {
+	h1.title-header {
 		cursor: pointer;
-  }
+	}
 
 	div.subtitle {
 		color: var(--subtitle-color);
 		font-weight: 400;
 		margin: 0.5rem auto;
-    max-width: 24ch;
+		max-width: 24ch;
 		text-align: center;
 
 		/* Small devices (portrait tablets and large phones, 600px and up) */
@@ -57,9 +60,8 @@ const {class: className = ''} = Astro.props;
 	}
 </style>
 
-
 <script>
-	import {navigate} from 'astro:transitions/client';
-  const header = document.querySelector('h1.title-header');
-  header?.addEventListener('click', () => navigate(import.meta.env.BASE_URL));
+	import { navigate } from "astro:transitions/client";
+	const header = document.querySelector("h1.title-header");
+	header?.addEventListener("click", () => navigate(import.meta.env.BASE_URL));
 </script>

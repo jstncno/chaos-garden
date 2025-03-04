@@ -1,19 +1,17 @@
 ---
-import {type GridItemData} from '../lib/grid-item';
-import {type PostData} from '../lib/post';
-import GridLayout from '../components/GridLayout.astro';
-import TitleHeader from '../components/TitleHeader.astro';
-import Layout from '../layouts/Layout.astro';
-import {sortPosts} from '../lib/utils';
+import { type GridItemData } from "../lib/grid-item";
+import { type PostData } from "../lib/post";
+import GridLayout from "../components/GridLayout.astro";
+import TitleHeader from "../components/TitleHeader.astro";
+import Layout from "../layouts/Layout.astro";
+import { sortPosts } from "../lib/utils";
 
-const posts: PostData[] = await Astro.glob('../posts/**/*.mdx');
-const items: GridItemData[] = sortPosts(posts)
-	.map(post => ({
-		postId: post.frontmatter.id,
-		title: post.frontmatter.title,
-		thumbnail: post.frontmatter.preview,
-	}));
-
+const posts: PostData[] = await Astro.glob("../posts/**/*.mdx");
+const items: GridItemData[] = sortPosts(posts).map((post) => ({
+	postId: post.frontmatter.id,
+	title: post.frontmatter.title,
+	thumbnail: post.frontmatter.preview,
+}));
 ---
 
 <Layout title="Chaos Garden">
@@ -24,7 +22,7 @@ const items: GridItemData[] = sortPosts(posts)
 				A showcase of my generative and technical artwork
 			</div>
 		</TitleHeader>
-		<GridLayout items={items}/>
+		<GridLayout items={items} />
 	</main>
 </Layout>
 

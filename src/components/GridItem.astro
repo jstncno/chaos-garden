@@ -38,8 +38,7 @@ const img = `${thumbnail}`;
 			super();
 			const postId = this.dataset.post;
 			if (postId) {
-				const route = `${import.meta.env.BASE_URL}/${postId}`;
-				this.addEventListener("click", () => navigate(route));
+				this.addEventListener("click", () => navigate(postId));
 			}
 		}
 	}

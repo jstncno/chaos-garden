@@ -1,10 +1,10 @@
 ---
-import {Icon} from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
-import TitleHeader from '../components/TitleHeader.astro';
-import Layout from '../layouts/Layout.astro';
-import {type PostData} from '../lib/post';
-import {sortPosts} from '../lib/utils';
+import TitleHeader from "../components/TitleHeader.astro";
+import Layout from "../layouts/Layout.astro";
+import { type PostData } from "../lib/post";
+import { sortPosts } from "../lib/utils";
 
 interface RouteParams {
 	post: string;
@@ -17,28 +17,31 @@ interface StaticPath {
 }
 
 export async function getStaticPaths(): Promise<StaticPath[]> {
-	const posts: PostData[] = await Astro.glob('../posts/**/*.mdx');
-  return sortPosts(posts)
-		.map(post => ({
-			params: { post: post.frontmatter.id },
-			props: { post },
-		}));
+	const posts: PostData[] = await Astro.glob("../posts/**/*.mdx");
+	return sortPosts(posts).map((post) => ({
+		params: { post: post.frontmatter.id },
+		props: { post },
+	}));
 }
 
-const {Content, frontmatter} = Astro.props.post;
+const { Content, frontmatter } = Astro.props.post;
 ---
 
 <Layout title={frontmatter.title}>
 	<div class="navbar-container" transition:animate="slide">
 		<div class="navbar">
-			<span id="back-btn" transition:persist><Icon name="mdi:chevron-left" size={32}></span>
+			<span id="back-btn" transition:persist>
+				<Icon name="mdi:chevron-left" size={32} />
+			</span>
 			<TitleHeader class="navbar-header">{frontmatter.title}</TitleHeader>
-			<span class="icon-spacer"><Icon name="mdi:dots-horizontal" size={32}></span>
+			<span class="icon-spacer">
+				<Icon name="mdi:dots-horizontal" size={32} />
+			</span>
 		</div>
 	</div>
 	<div class="main-container" transition:animate="slide">
 		<main>
-			<Content components={{h1: TitleHeader }} />
+			<Content components={{ h1: TitleHeader }} />
 		</main>
 	</div>
 </Layout>
@@ -80,13 +83,13 @@ const {Content, frontmatter} = Astro.props.post;
 </style>
 
 <script>
-	import {navigate} from 'astro:transitions/client';
+	import { navigate } from "astro:transitions/client";
 
 	function setBackButtonListener() {
-		const btn = document.getElementById('back-btn');
-		btn?.addEventListener('click', () => navigate(import.meta.env.BASE_URL));
+		const btn = document.getElementById("back-btn");
+		btn?.addEventListener("click", () => navigate(import.meta.env.BASE_URL));
 	}
 
-	document.addEventListener('astro:after-swap', () => setBackButtonListener());
+	document.addEventListener("astro:after-swap", () => setBackButtonListener());
 	setBackButtonListener();
 </script>
