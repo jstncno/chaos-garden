@@ -66,7 +66,7 @@ export class LightPathGenerator {
 
     if (iterations >= MAX_ITERATIONS) {
       console.warn("Max iterations when generating a LightPath");
-      p5.noLoop();
+      return;
     }
 
     return new LightPath(p5, path, speed);
