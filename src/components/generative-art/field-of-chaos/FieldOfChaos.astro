@@ -1,0 +1,26 @@
+---
+
+---
+
+<div id="art-container">
+  <field-of-chaos></field-of-chaos>
+</div>
+
+<style>
+  #art-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
+
+  field-of-chaos {
+    width: 100%;
+  }
+</style>
+
+<script>
+  import P5 from "p5";
+  import { FieldOfChaosElement } from "@lib/generative-art/field-of-chaos";
+
+  customElements.define("field-of-chaos", FieldOfChaosElement);
+</script>
